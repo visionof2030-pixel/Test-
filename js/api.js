@@ -1,0 +1,213 @@
+// ============================================================
+// api.js - التواصل مع الخوادم (Supabase, APIs خارجية)
+// ============================================================
+
+// ===== تكوين Supabase =====
+const SUPABASE_URL = "https://szjxwhsmefqpfcebtvei.supabase.co";
+const SUPABASE_KEY = "sb_publishable_0um28lgPMHcjDOThT0UgDA_K-Y7Wmx3";
+
+let supabaseClient = null;
+try {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log("✅ Supabase متصل");
+} catch (e) {
+    console.error("❌ Supabase init error", e);
+}
+
+// ===== التخزين المؤقت =====
+const CACHE_KEY = "wc_cache_v2";
+const CACHE_TIME = 5 * 60 * 1000;
+
+function setCache(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify({ value, time: Date.now() }));
+    } catch (e) { /* تجاهل */ }
+}
+
+function getCache(key) {
+    try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (Date.now() - parsed.time > CACHE_TIME) return null;
+        return parsed.value;
+    } catch { return null; }
+}
+
+// ===== جلب المباريات السابقة =====
+async function fetchPreviousGames() {
+    try {
+        const cached = getCache("games");
+        if (cached) return cached;
+
+        const res = await fetch("https://worldcup26.ir/get/games");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        
+        const finished = (data.games || []).filter(g => g.finished === "TRUE");
+        const games = finished.map(g => ({
+            homeAr: translateToArabic(g.home_team_name_en || g.home_team_name_fa || ''),
+            awayAr: translateToArabic(g.away_team_name_en || g.away_team_name_fa || ''),
+            homeScore: parseInt(g.home_score || 0),
+            awayScore: parseInt(g.away_score || 0),
+            homePenalty: g.home_penalty_score ? parseInt(g.home_penalty_score) : null,
+            awayPenalty: g.away_penalty_score ? parseInt(g.away_penalty_score) : null,
+            hadPenalties: !!(g.home_penalty_score && g.away_penalty_score),
+            sortTimestamp: g.local_date ? new Date(g.local_date).getTime() : 0
+        }));
+
+        setCache("games", games);
+        return games;
+    } catch (e) {
+        console.error("❌ fetchPreviousGames:", e);
+        return [];
+    }
+}
+
+// ===== جلب بيانات OpenFootball =====
+async function fetchOpenfootballMatches() {
+    try {
+        const cached = getCache("openfootball");
+        if (cached) return cached;
+
+        const res = await fetch("https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const matches = data.matches || [];
+
+        setCache("openfootball", matches);
+        return matches;
+    } catch (e) {
+        console.warn("⚠️ fetchOpenfootballMatches:", e);
+        return [];
+    }
+}
+
+// ===== جلب جميع التوقعات =====
+async function fetchAllPredictions(limit = 500) {
+    if (!supabaseClient) return [];
+    try {
+        const cached = getCache("predictions");
+        if (cached) return cached;
+
+        const { data, error } = await supabaseClient
+            .from("predictions")
+            .select("*")
+            .limit(limit);
+
+        if (error) throw error;
+        setCache("predictions", data || []);
+        return data || [];
+    } catch (e) {
+        console.warn("⚠️ fetchAllPredictions:", e);
+        return [];
+    }
+}
+
+// ===== جلب توقعات مستخدم =====
+async function fetchUserPredictions(userName) {
+    if (!supabaseClient || !userName) return [];
+    try {
+        const { data, error } = await supabaseClient
+            .from("predictions")
+            .select("*")
+            .eq("user_name", userName)
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return data || [];
+    } catch (e) {
+        console.error("❌ fetchUserPredictions:", e);
+        return [];
+    }
+}
+
+// ===== جلب توقعات مباراة =====
+async function fetchMatchPredictions(matchId) {
+    if (!supabaseClient || !matchId) return [];
+    try {
+        const { data, error } = await supabaseClient
+            .from("predictions")
+            .select("*")
+            .eq("match_id", matchId)
+            .order("created_at", { ascending: true });
+
+        if (error) throw error;
+        return data || [];
+    } catch (e) {
+        console.error("❌ fetchMatchPredictions:", e);
+        return [];
+    }
+}
+
+// ===== حفظ توقع =====
+async function savePredictionToSupabase(userName, matchId, prediction) {
+    if (!supabaseClient) return { success: false, message: "Supabase غير متصل" };
+
+    try {
+        const { data: existing, error: checkError } = await supabaseClient
+            .from("predictions")
+            .select("id")
+            .eq("user_name", userName)
+            .eq("match_id", matchId)
+            .limit(1);
+
+        if (checkError) throw checkError;
+
+        if (existing && existing.length > 0) {
+            const { error: updateError } = await supabaseClient
+                .from("predictions")
+                .update({ 
+                    prediction: prediction,
+                    updated_at: new Date().toISOString()
+                })
+                .eq("id", existing[0].id);
+
+            if (updateError) throw updateError;
+            return { success: true, updated: true };
+        } else {
+            const { error: insertError } = await supabaseClient
+                .from("predictions")
+                .insert([{
+                    user_name: userName,
+                    match_id: matchId,
+                    prediction: prediction,
+                    created_at: new Date().toISOString()
+                }]);
+
+            if (insertError) throw insertError;
+            return { success: true, updated: false };
+        }
+    } catch (e) {
+        console.error("❌ savePredictionToSupabase:", e);
+        return { success: false, message: e.message };
+    }
+}
+
+// ===== التحقق من وجود اسم مستخدم =====
+async function checkUserNameExists(userName) {
+    if (!supabaseClient || !userName) return false;
+    try {
+        const { data, error } = await supabaseClient
+            .from("predictions")
+            .select("user_name")
+            .eq("user_name", userName)
+            .limit(1);
+
+        if (error) throw error;
+        return data && data.length > 0;
+    } catch (e) {
+        console.error("❌ checkUserNameExists:", e);
+        return false;
+    }
+}
+
+// ===== تصدير الدوال للاستخدام العام =====
+window.fetchPreviousGames = fetchPreviousGames;
+window.fetchOpenfootballMatches = fetchOpenfootballMatches;
+window.fetchAllPredictions = fetchAllPredictions;
+window.fetchUserPredictions = fetchUserPredictions;
+window.fetchMatchPredictions = fetchMatchPredictions;
+window.savePredictionToSupabase = savePredictionToSupabase;
+window.checkUserNameExists = checkUserNameExists;
+window.supabaseClient = supabaseClient;
