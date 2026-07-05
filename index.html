@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>🏆 كأس العالم 2026 — التوقع التفاعلي</title>
+    
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- الأنماط -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <!-- ===== الهيدر العلوي ===== -->
+    <div class="top-bar">
+        <img class="trophy-image" src="https://i.ibb.co/bRG2KtFw/IMG-3949.png" alt="كأس العالم 2026" />
+        <div class="overlay"></div>
+        <div class="top-bar-content">
+            <div class="top-bar-title">
+                <span class="icon">🏆</span>
+                <span class="gold-text">كأس العالم 2026</span>
+            </div>
+            <div class="top-bar-sub">
+                <span class="emoji">⚡</span> غرفة معلمي سعيد بن العاص
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- ===== الهيدر اللاصق ===== -->
+        <header class="sticky-header">
+            <div class="brand">
+                <div>
+                    <h1>🏆 المتابعة التفاعلية</h1>
+                    <span class="sub">⚡ تابع المباريات وتوقع النتائج</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="themeToggleBtn" onclick="window.toggleTheme()">🌙 الوضع المظلم</button>
+                <button class="header-btn" onclick="window.shareResults()">📤 مشاركة</button>
+                <button class="header-btn" onclick="location.reload()">🔄 تحديث</button>
+            </div>
+        </header>
+
+        <!-- ===== شريط الأخبار ===== -->
+        <div class="news-ticker-wrapper" id="newsTickerWrapper">
+            <div class="news-ticker" id="newsTicker">
+                <span>🏆 كأس العالم 2026 — تابع المباريات وتوقع النتائج</span>
+                <span class="sep">|</span>
+                <span>🗳️ طريقة التوقع: اختر المباراة → أدخل اسمك → اختر الفائز</span>
+                <span class="sep">|</span>
+                <span>⏰ يمكنك التوقع حتى 5 دقائق قبل بداية المباراة</span>
+                <span class="sep">|</span>
+                <span>🏅 كل توقع صحيح = نقطة واحدة · تصدر لوحة المتصدرين!</span>
+                <span class="sep">|</span>
+                <span id="todayHighlights">📅 جاري تحميل توقعات اليوم...</span>
+            </div>
+        </div>
+
+        <!-- ===== لوحة المتصدرين ===== -->
+        <div class="leaderboard-section" id="leaderboardSection">
+            <div class="lb-header">
+                <div class="title">
+                    <span class="trophy">🏆</span>
+                    <span>لوحة المتصدرين</span>
+                </div>
+                <div class="lb-stats">
+                    <span class="stat">👥 <span class="num" id="lbTotalPlayers">0</span> لاعب</span>
+                    <span class="stat">📊 <span class="num" id="lbTotalPredictions">0</span> توقع</span>
+                    <button class="share-btn" onclick="window.shareResults()">📤 مشاركة</button>
+                </div>
+            </div>
+            <div class="lb-period-tabs">
+                <button class="period-btn active" data-period="all" onclick="window.setLeaderboardPeriod('all')">📊 ترتيب عام</button>
+                <button class="period-btn" data-period="24h" onclick="window.setLeaderboardPeriod('24h')">🕒 آخر 24 ساعة</button>
+                <button class="analytics-trigger" onclick="window.openAnalytics()">📊 تحليلات متقدمة</button>
+            </div>
+            <div id="leaderboardContainer">
+                <div class="empty-state">
+                    <span class="icon">⏳</span> جاري تحميل الترتيب...
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== أدوات التحكم ===== -->
+        <div class="controls-bar">
+            <div class="control-group">
+                <label>🏷️ المجموعة</label>
+                <select id="groupFilter">
+                    <option value="all">جميع المجموعات</option>
+                    <option value="A">المجموعة A</option>
+                    <option value="B">المجموعة B</option>
+                    <option value="C">المجموعة C</option>
+                    <option value="D">المجموعة D</option>
+                    <option value="E">المجموعة E</option>
+                    <option value="F">المجموعة F</option>
+                    <option value="G">المجموعة G</option>
+                    <option value="H">المجموعة H</option>
+                    <option value="I">المجموعة I</option>
+                    <option value="J">المجموعة J</option>
+                    <option value="K">المجموعة K</option>
+                    <option value="L">المجموعة L</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ===== لوحة الإدارة ===== -->
+        <div class="admin-controls" id="adminControls">
+            <div class="admin-info">
+                🛠️ <span>لوحة الإدارة</span>
+                <span class="badge-admin">👑 مدير</span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="admin-btn" id="toggleCompactBtn" onclick="window.toggleCompactMode()">📐 تصغير للتصوير</button>
+                <button class="admin-btn danger" onclick="window.resetCompactMode()">🔄 إعادة الحجم الطبيعي</button>
+                <button class="admin-btn secondary" onclick="window.loadDuplicates()">🔍 التوقعات المكررة</button>
+                <button class="admin-btn" onclick="window.toggleArchive()">📦 الأرشيف</button>
+                <button class="admin-btn secondary" onclick="window.runTests()">🧪 اختبارات</button>
+                <button class="admin-btn bracket-btn" onclick="window.toggleBracketAdmin()">🏆 مسار البطولة</button>
+            </div>
+            
+            <div class="duplicates-section" id="duplicatesSection">
+                <div class="dup-title">⚠️ التوقعات المكررة <span class="count-badge" id="dupCountBadge">0</span></div>
+                <div id="duplicatesContainer"><div class="duplicates-empty">⏳ جاري التحميل...</div></div>
+            </div>
+            
+            <div class="archive-section" id="archiveSection">
+                <div class="archive-title">📦 أرشيف المباريات المنتهية <span class="count-badge" id="archiveCount">0</span></div>
+                <div id="archiveContainer"><div class="duplicates-empty">⏳ جاري التحميل...</div></div>
+            </div>
+            
+            <div class="bracket-wrapper" id="bracketWrapper">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+                    <span style="font-size:0.85rem;font-weight:800;color:var(--gold-light);">🏆 مسار البطولة</span>
+                    <button class="admin-btn secondary" style="padding:4px 14px;font-size:0.65rem;" onclick="document.getElementById('bracketWrapper').classList.remove('visible')">✕ إخفاء</button>
+                </div>
+                <div id="bracketContainer"><div class="empty-state"><span class="icon">⏳</span> جاري تحميل المخطط...</div></div>
+            </div>
+        </div>
+
+        <!-- ===== مشاركة الروابط ===== -->
+        <div class="share-all-container" id="shareAllContainer">
+            <div class="share-info">
+                📋 <span>روابط مباريات اليوم والغد</span>
+                <span class="count" id="shareAllCount">0</span> مباراة
+            </div>
+            <button class="share-all-btn" onclick="window.shareAllTodayTomorrow()">📤 نسخ جميع الروابط</button>
+        </div>
+
+        <!-- ===== التبويبات ===== -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="upcoming">⚡ القادمة والجارية</button>
+                <button class="tab-btn" data-tab="previous">📋 السابقة</button>
+                <button class="tab-btn" data-tab="standings">📊 ترتيب المجموعات</button>
+                <button class="tab-btn" data-tab="scorers">🏅 الهدافين</button>
+                <button class="tab-btn" data-tab="stats">📊 إحصائيات الفرق</button>
+                <button class="tab-btn" data-tab="predictions">🗳️ جميع التوقعات</button>
+            </div>
+            <div class="day-filter-tabs visible" id="dayFilterTabs">
+                <button class="day-btn active" data-day="all">📅 الكل</button>
+                <button class="day-btn" data-day="today">📌 اليوم</button>
+                <button class="day-btn" data-day="tomorrow">📌 غداً</button>
+                <button class="day-btn" data-day="week">📅 هذا الأسبوع</button>
+            </div>
+        </div>
+
+        <!-- ===== محتوى التبويبات ===== -->
+        <div id="upcomingTab" class="tab-content active">
+            <div class="section-title">⚡ المباريات القادمة والجارية <span class="badge-count" id="upcomingCount">0</span></div>
+            <div id="matchesContainer" class="matches-grid">
+                <div class="empty-state"><span class="icon">⏳</span> جاري تحميل المباريات...</div>
+            </div>
+        </div>
+
+        <div id="previousTab" class="tab-content">
+            <div class="section-title">📋 المباريات السابقة <span class="badge-count" id="prevCount">0</span></div>
+            <div style="margin-bottom:16px;">
+                <input type="text" id="prevSearchInput" placeholder="🔍 ابحث عن منتخب لعرض مبارياته السابقة..." style="width:100%;padding:12px 20px;border-radius:60px;border:1px solid var(--border-subtle);background:var(--bg-input);color:var(--text-primary);font-size:0.85rem;outline:none;transition:var(--transition);font-family:inherit;" />
+            </div>
+            <div id="previousMatchesContainer" class="matches-grid">
+                <div class="empty-state"><span class="icon">⏳</span> جاري تحميل المباريات السابقة...</div>
+            </div>
+        </div>
+
+        <div id="standingsTab" class="tab-content">
+            <div class="section-title">📊 ترتيب المجموعات</div>
+            <div id="standingsContainer" class="groups-container">
+                <div class="empty-state"><span class="icon">⏳</span> جاري حساب الترتيب...</div>
+            </div>
+        </div>
+
+        <div id="scorersTab" class="tab-content">
+            <div class="section-title">🏅 قائمة الهدافين <span class="badge-count" id="scorersCount">0</span></div>
+            <div id="scorersContainer">
+                <div class="empty-state"><span class="icon">⏳</span> جاري تحميل الهدافين...</div>
+            </div>
+        </div>
+
+        <div id="statsTab" class="tab-content">
+            <div class="section-title">📊 إحصائيات الفرق (الهجوم والدفاع)</div>
+            <div id="teamStatsContainer">
+                <div class="empty-state"><span class="icon">⏳</span> جاري حساب الإحصائيات...</div>
+            </div>
+        </div>
+
+        <div id="predictionsTab" class="tab-content">
+            <div class="section-title">🗳️ جميع التوقعات <span class="badge-count" id="predictionsCount">0</span></div>
+            <div id="allPredictions" class="predictions-grid">
+                <div class="empty-state"><span class="icon">⏳</span> جاري تحميل التوقعات...</div>
+            </div>
+        </div>
+
+        <footer class="footer" id="footerTrigger">🏆 كأس العالم 2026 · غرفة معلمي سعيد بن العاص</footer>
+    </div>
+
+    <!-- ===== النوافذ المنبثقة ===== -->
+    
+    <!-- نافذة كلمة السر -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-box">
+            <span class="lock-icon">🔒</span>
+            <div class="p-title">تأكيد الوصول</div>
+            <div class="p-sub">يرجى إدخال رمز الوصول للمتابعة</div>
+            <input type="password" id="passwordInput" placeholder="••••" maxlength="10" autofocus />
+            <button class="p-btn" id="passwordSubmitBtn">تأكيد</button>
+            <div class="p-error" id="passwordError"></div>
+            <button class="p-close" id="passwordCloseBtn">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- نافذة إدخال الاسم -->
+    <div class="name-modal-overlay" id="nameModal">
+        <div class="name-modal-content">
+            <span class="name-icon">👤</span>
+            <div class="name-title">أدخل اسمك</div>
+            <div class="name-sub">سيتم استخدام هذا الاسم لتسجيل توقعاتك ومتابعة نتائجك</div>
+            <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." maxlength="30" autofocus />
+            <div id="nameStatus" class="user-status" style="display:none;"></div>
+            <button class="name-btn" id="nameSubmitBtn">متابعة →</button>
+            <div class="name-error" id="nameError"></div>
+            <button class="name-close" id="nameCloseBtn">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- نافذة توقعات المباراة -->
+    <div class="modal-overlay" id="matchPredictionsModal">
+        <div class="modal-content" id="matchPredictionsContent">
+            <button class="modal-close" id="matchPredictionsCloseBtn">✕</button>
+            <button class="modal-compact-btn" id="modalCompactBtn" onclick="window.toggleModalCompact()">📐 تصغير</button>
+            <div class="modal-title">📋 توقعات المباراة</div>
+            <div class="modal-teams" id="matchPredictionsTeams">
+                <div class="m-team"><span class="flag" id="mpFlag1">🏁</span> <span id="mpTeam1">الفريق الأول</span></div>
+                <div class="m-vs">🆚</div>
+                <div class="m-team"><span class="flag" id="mpFlag2">🏁</span> <span id="mpTeam2">الفريق الثاني</span></div>
+            </div>
+            <div style="text-align:center;font-size:0.85rem;color:var(--gold-light);font-weight:700;margin:4px 0 8px;" id="mpResult">النتيجة: 0 - 0</div>
+            <div id="mpScorersDetail" class="scorers-detail"></div>
+            <div class="predictions-stats">
+                <span class="stat-item">✅ صحيح: <span class="num-correct" id="mpCorrectCount">0</span></span>
+                <span class="stat-item">❌ خاطئ: <span class="num-wrong" id="mpWrongCount">0</span></span>
+                <span class="stat-item">📊 المجموع: <span id="mpTotalCount">0</span></span>
+            </div>
+            <div id="matchPredictionsList" style="max-height:400px;overflow-y:auto;">
+                <div class="predictions-table-wrapper">
+                    <table class="predictions-table" id="predictionsTable">
+                        <thead><tr><th>المستخدم</th><th>التوقع</th><th>الحالة</th><th>الوقت</th></tr></thead>
+                        <tbody id="predictionsTableBody"><tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-secondary);">📭 لا توجد توقعات لهذه المباراة</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التوقع -->
+    <div class="modal-overlay" id="predictionModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn">✕</button>
+            <div class="modal-title" id="modalTitle">📝 توقع نتيجة المباراة</div>
+            <div style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-bottom:8px;" id="modalUserGreeting">👤 مرحباً <span id="greetingName"></span></div>
+            <div class="modal-teams" id="modalTeams">
+                <div class="m-team"><span class="flag" id="modalFlag1">🏁</span> <span id="modalTeam1">الفريق الأول</span></div>
+                <div class="m-vs">🆚</div>
+                <div class="m-team"><span class="flag" id="modalFlag2">🏁</span> <span id="modalTeam2">الفريق الثاني</span></div>
+            </div>
+            <div style="text-align:center;font-size:0.75rem;color:var(--text-secondary);margin-bottom:14px;" id="modalDateTime">📅 التاريخ والوقت (بتوقيت السعودية)</div>
+            <div class="modal-options" id="modalOptions">
+                <label><input type="radio" name="prediction" value="HOME" /><span class="opt-label">🏆 <span id="optTeam1">الفريق الأول</span></span><span class="opt-sub">فوز</span></label>
+                <label><input type="radio" name="prediction" value="AWAY" /><span class="opt-label">🏆 <span id="optTeam2">الفريق الثاني</span></span><span class="opt-sub">فوز</span></label>
+                <label id="drawOption" style="display:none;"><input type="radio" name="prediction" value="DRAW" /><span class="opt-label">🤝 تعادل</span><span class="opt-sub">تعادل</span></label>
+            </div>
+            <button class="modal-submit" id="modalSubmitBtn">💾 حفظ التوقع</button>
+            <div class="modal-message" id="modalMessage"></div>
+        </div>
+    </div>
+
+    <!-- نافذة توقعات اللاعب -->
+    <div class="modal-overlay" id="playerPredictionsModal">
+        <div class="modal-content">
+            <button class="modal-close" id="playerModalCloseBtn">✕</button>
+            <div class="modal-title">📋 جميع توقعات <span id="playerModalName"></span></div>
+            <div style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin:4px 0 12px;">
+                ✅ صحيح: <span id="playerCorrectCount" style="color:var(--success);font-weight:800;">0</span> |
+                ❌ خاطئ: <span id="playerWrongCount" style="color:var(--danger);font-weight:800;">0</span> |
+                📊 عدد التوقعات الكلي: <span id="playerTotalCount" style="color:var(--gold-light);font-weight:800;">0</span>
+            </div>
+            <div id="playerPredictionsList" style="max-height:500px;overflow-y:auto;padding:4px 0;">
+                <div class="empty-state"><span class="icon">📭</span> لا توجد توقعات لهذا اللاعب</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة استعراض التوقعات -->
+    <div class="modal-overlay" id="viewPredictionsModal">
+        <div class="modal-content">
+            <button class="modal-close" id="viewModalCloseBtn">✕</button>
+            <div class="modal-title">📋 توقعات المباراة</div>
+            <div class="modal-teams" id="viewModalTeams">
+                <div class="m-team"><span class="flag" id="viewFlag1">🏁</span> <span id="viewTeam1">الفريق الأول</span></div>
+                <div class="m-vs">🆚</div>
+                <div class="m-team"><span class="flag" id="viewFlag2">🏁</span> <span id="viewTeam2">الفريق الثاني</span></div>
+            </div>
+            <div style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin:8px 0 14px;">
+                عدد التوقعات: <span id="viewPredictionsCount" style="color:var(--gold-light);font-weight:800;">0</span>
+            </div>
+            <div class="win-probability" id="winProbabilityContainer">
+                <div class="prob-title">📊 نسبة التوقعات (حسب نتائج المستخدمين)</div>
+                <div class="prob-bar" id="probBar">
+                    <div class="segment home" style="width:0%;">0%</div>
+                    <div class="segment away" style="width:0%;">0%</div>
+                </div>
+                <div class="prob-labels">
+                    <span class="label"><span class="dot home"></span> فوز <span id="probTeam1">الفريق الأول</span>: <span class="percent" id="probHomePercent">0%</span></span>
+                    <span class="label"><span class="dot away"></span> فوز <span id="probTeam2">الفريق الثاني</span>: <span class="percent" id="probAwayPercent">0%</span></span>
+                </div>
+            </div>
+            <div id="viewPredictionsList" style="max-height:400px;overflow-y:auto;">
+                <div class="empty-state"><span class="icon">📭</span> لا توجد توقعات لهذه المباراة</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة مسار البطولة -->
+    <div class="modal-overlay" id="bracketMatchModal">
+        <div class="modal-content">
+            <button class="modal-close" id="bracketModalCloseBtn">✕</button>
+            <div class="modal-title">🏟️ تفاصيل المباراة</div>
+            <div id="bracketMatchDetail"><div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div></div>
+        </div>
+    </div>
+
+    <!-- نافذة نتائج الاختبارات -->
+    <div class="modal-overlay" id="testResultsModal">
+        <div class="modal-content">
+            <button class="modal-close" id="testResultsCloseBtn">✕</button>
+            <div class="modal-title">🧪 نتائج الاختبارات</div>
+            <div id="testResultsContent"><div class="empty-state"><span class="icon">⏳</span> جاري التشغيل...</div></div>
+        </div>
+    </div>
+
+    <!-- نافذة التحليلات المتقدمة -->
+    <div class="modal-overlay" id="analyticsModal">
+        <div class="modal-content" style="max-width:900px;">
+            <button class="modal-close" id="analyticsCloseBtn">✕</button>
+            <div class="modal-title">📊 تحليلات متقدمة</div>
+            <div id="analyticsContent">
+                <div class="analytics-grid">
+                    <div class="chart-box full-width">
+                        <div class="chart-title">📊 أكثر اللاعبين توقعاً</div>
+                        <canvas id="chartPlayerDistribution"></canvas>
+                    </div>
+                    <div class="chart-box full-width">
+                        <div class="chart-title">📈 تطور نقاط أفضل 5 لاعبين</div>
+                        <canvas id="chartPoints"></canvas>
+                    </div>
+                    <div class="chart-box full-width">
+                        <div class="chart-title">🔥 أكثر المباريات توقعاً</div>
+                        <canvas id="chartPopular"></canvas>
+                    </div>
+                    <div class="chart-box full-width">
+                        <div class="chart-title">🎯 نسبة التوقعات الصحيحة (أفضل 5)</div>
+                        <canvas id="chartAccuracy"></canvas>
+                    </div>
+                </div>
+                <div class="player-analytics-section" id="playerAnalyticsSection">
+                    <div class="select-player">
+                        <select id="playerAnalyticsSelect" onchange="window.updatePlayerAnalytics()">
+                            <option value="">-- اختر لاعباً --</option>
+                        </select>
+                    </div>
+                    <div id="playerAnalyticsDetails" class="player-analytics-details" style="display:none;"></div>
+                </div>
+                <div class="match-analytics-section" id="matchAnalyticsSection">
+                    <div class="match-analytics-grid" id="matchAnalyticsGrid"></div>
+                </div>
+                <div style="text-align:center;margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                    <button class="tab-btn" onclick="document.getElementById('analyticsModal').classList.remove('active');document.body.style.overflow='';" style="background:var(--gold-glow);border-color:var(--border-gold);color:var(--gold-light);">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة مقارنة اللاعبين -->
+    <div class="modal-overlay" id="compareModal">
+        <div class="modal-content" style="max-width:700px;">
+            <button class="modal-close" id="compareModalCloseBtn">✕</button>
+            <div class="modal-title">📊 مقارنة بين لاعبين</div>
+            <div class="compare-select">
+                <select id="compareSelect1"></select>
+                <select id="compareSelect2"></select>
+                <button class="admin-btn" onclick="window.renderCompare()" style="background:var(--gold-gradient);color:#0a0e1a;">مقارنة</button>
+            </div>
+            <div id="compareResult">
+                <div class="compare-container">
+                    <div class="compare-player" id="comparePlayer1">
+                        <h3 id="compareName1">👤 لاعب 1</h3>
+                        <div id="compareStats1"><div class="empty-state"><span class="icon">⏳</span> اختر لاعباً</div></div>
+                    </div>
+                    <div class="compare-vs">🆚</div>
+                    <div class="compare-player" id="comparePlayer2">
+                        <h3 id="compareName2">👤 لاعب 2</h3>
+                        <div id="compareStats2"><div class="empty-state"><span class="icon">⏳</span> اختر لاعباً</div></div>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-submit" onclick="window.closeCompareModal()" style="margin-top:12px;">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة إحصائيات الفريقين -->
+    <div class="modal-overlay" id="teamStatsModal">
+        <div class="modal-content" style="max-width:900px;">
+            <button class="modal-close" id="teamStatsCloseBtn">✕</button>
+            <div class="modal-title">📊 إحصائيات الفريقين</div>
+            <div id="teamStatsContent">
+                <div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="copy-toast" id="copyToast">✅ تم نسخ الرابط!</div>
+
+    <!-- ===== جافاسكريبت ===== -->
+    <script src="js/api.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/ui.js"></script>
+    
+    <script>
+        // ============================================================
+        //  نقطة الدخول - تهيئة التطبيق
+        // ============================================================
+        async function initApp() {
+            console.log("🚀 تهيئة التطبيق...");
+            
+            // التأكد من وجود الدوال المطلوبة
+            if (typeof window.init === 'function') {
+                await window.init();
+            } else {
+                console.error("❌ دالة init غير موجودة");
+                // محاولة تهيئة مباشرة
+                if (typeof window.initializeApp === 'function') {
+                    await window.initializeApp();
+                }
+            }
+        }
+
+        // تشغيل التطبيق بعد تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأخير بسيط للتأكد من تحميل جميع الملفات
+            setTimeout(initApp, 100);
+        });
+    </script>
+</body>
+</html>
