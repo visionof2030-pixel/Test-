@@ -2,16 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>🏆 لوحة المتصدرين</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>كأس العالم 2026 — العرض الختامي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-    </script>
     <style>
         /* ============================================================
-           ROOT & RESET – عصري، نظيف، أنيق
+           RESET & ROOT – CINEMATIC
            ============================================================ */
         * {
             margin: 0;
@@ -21,2722 +18,1470 @@
         }
 
         :root {
-            --bg-primary: #0b0f1a;
-            --bg-secondary: #111b2b;
-            --bg-card: rgba(18, 28, 46, 0.80);
-            --bg-card-hover: rgba(30, 50, 80, 0.90);
-            --bg-input: rgba(255, 255, 255, 0.03);
-            --gold: #e4b34a;
+            --gold: #d4a745;
             --gold-light: #f3d88a;
-            --gold-glow: rgba(212, 167, 69, 0.18);
+            --gold-glow: rgba(212, 167, 69, 0.3);
             --gold-gradient: linear-gradient(145deg, #f3d88a, #c99a2e);
+            --bg-primary: #0b0e14;
+            --bg-secondary: #111a27;
             --text-primary: #ecf3fa;
             --text-secondary: #8aa0c0;
             --text-muted: #4f6b8a;
-            --success: #31d67a;
-            --success-bg: rgba(49, 214, 122, 0.10);
-            --danger: #f25a6a;
-            --danger-bg: rgba(242, 90, 106, 0.10);
-            --info: #4a9eff;
-            --info-bg: rgba(74, 158, 255, 0.10);
-            --border-subtle: rgba(255, 255, 255, 0.04);
-            --border-gold: rgba(212, 167, 69, 0.25);
-            --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.02);
-            --shadow-glow: 0 0 80px rgba(212, 167, 69, 0.04);
-            --radius-lg: 28px;
-            --radius-md: 18px;
-            --radius-sm: 12px;
-            --transition: all 0.25s cubic-bezier(0.3, 0, 0, 1);
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.8);
+            --radius-lg: 24px;
+            --radius-md: 14px;
+            --transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        [data-theme="light"] {
-            --bg-primary: #f2f6fe;
-            --bg-secondary: #ffffff;
-            --bg-card: rgba(255, 255, 255, 0.88);
-            --bg-card-hover: rgba(255, 255, 255, 0.98);
-            --bg-input: rgba(0, 0, 0, 0.02);
-            --text-primary: #14273e;
-            --text-secondary: #3d5a78;
-            --text-muted: #92a9c9;
-            --border-subtle: rgba(0, 0, 0, 0.06);
-            --border-gold: rgba(212, 167, 69, 0.35);
-            --shadow-card: 0 16px 48px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.02);
-            --shadow-glow: 0 0 80px rgba(212, 167, 69, 0.06);
-            --gold-glow: rgba(212, 167, 69, 0.12);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        html,
         body {
-            font-family: 'Cairo', 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            font-size: 14px;
-            line-height: 1.6;
-            transition: var(--transition);
-            padding: 8px;
-            display: flex;
-            justify-content: center;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.01);
-            border-radius: 20px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 20px;
-        }
-
-        .app-container {
-            max-width: 1120px;
             width: 100%;
-            margin: 0 auto;
-        }
-
-        /* ============================================================
-           HEADER – بدون أي عبارات
-           ============================================================ */
-        .header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px 10px;
-            padding: 6px 14px;
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-gold);
-            margin-bottom: 14px;
-            backdrop-filter: blur(14px);
-            box-shadow: var(--shadow-card);
-            min-height: 44px;
-        }
-
-        .header .actions {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .header .actions button {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            letter-spacing: 0.2px;
-            backdrop-filter: blur(4px);
-        }
-        .header .actions button:hover {
-            background: var(--gold-glow);
-            border-color: var(--gold);
-            color: var(--gold-light);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(212, 167, 69, 0.10);
-        }
-
-        /* ============================================================
-           TABS
-           ============================================================ */
-        .main-tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 4px;
-            margin-bottom: 14px;
-            backdrop-filter: blur(14px);
-            box-shadow: var(--shadow-card);
-            flex-wrap: wrap;
-        }
-        .main-tabs .tab-btn {
-            padding: 6px 16px;
-            border-radius: var(--radius-md);
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-            flex: 1;
-            min-width: 80px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .main-tabs .tab-btn:hover {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .main-tabs .tab-btn.active {
-            background: var(--gold-glow);
-            color: var(--gold-light);
-            box-shadow: 0 0 30px rgba(212, 167, 69, 0.05);
-            border: 1px solid var(--border-gold);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeInModal 0.3s ease;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeInModal {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ============================================================
-           LEADERBOARD SECTION
-           ============================================================ */
-        .leaderboard-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 16px 16px 16px;
-            box-shadow: var(--shadow-card), var(--shadow-glow);
-            backdrop-filter: blur(14px);
-            position: relative;
-            overflow: hidden;
-        }
-        .leaderboard-section::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            right: -15%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
-            pointer-events: none;
-            border-radius: 50%;
-            opacity: 0.6;
-        }
-
-        .lb-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px 12px;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-        .lb-header .lb-stats {
-            display: flex;
-            gap: 14px;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .lb-header .lb-stats .stat {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .lb-header .lb-stats .stat .num {
-            color: var(--gold-light);
-            font-weight: 800;
-            font-size: 0.85rem;
-        }
-
-        .lb-period-tabs {
-            display: flex;
-            gap: 3px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 3px;
-            border-radius: 50px;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        .lb-period-tabs .period-btn {
-            padding: 4px 14px;
-            border-radius: 40px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.6rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-        .lb-period-tabs .period-btn:hover {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .lb-period-tabs .period-btn.active {
-            background: var(--gold-glow);
-            color: var(--gold-light);
-            box-shadow: 0 0 20px rgba(212, 167, 69, 0.05);
-        }
-
-        /* ===== بطاقة البطل ===== */
-        .champion-card {
-            background: linear-gradient(145deg, rgba(212, 167, 69, 0.12), rgba(212, 167, 69, 0.02));
-            border: 2px solid var(--gold);
-            border-radius: var(--radius-lg);
-            padding: 18px 24px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-            box-shadow: 0 0 70px rgba(212, 167, 69, 0.08), inset 0 0 40px rgba(212, 167, 69, 0.02);
-            cursor: pointer;
-        }
-        .champion-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 100px rgba(212, 167, 69, 0.14), inset 0 0 60px rgba(212, 167, 69, 0.02);
-        }
-        .champion-card::after {
-            content: '👑';
-            position: absolute;
-            top: -8px;
-            left: 16px;
-            font-size: 2.8rem;
-            opacity: 0.10;
-            transform: rotate(12deg);
-            pointer-events: none;
-        }
-        .champion-card .rank-badge {
-            font-size: 2.8rem;
-            min-width: 60px;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 20px rgba(212, 167, 69, 0.15));
-        }
-        .champion-card .avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--gold-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #0b0f1a;
-            box-shadow: 0 0 50px rgba(212, 167, 69, 0.25);
-            flex-shrink: 0;
-            position: relative;
-            z-index: 2;
-            border: 3px solid rgba(255, 215, 0, 0.25);
-        }
-        .champion-card .info {
-            flex: 1;
-            min-width: 160px;
-            position: relative;
-            z-index: 2;
-        }
-        .champion-card .info .name {
-            font-size: 1.3rem;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            letter-spacing: -0.3px;
-            color: var(--gold-light);
-            text-shadow: 0 0 30px rgba(212, 167, 69, 0.10);
-        }
-        .champion-card .info .name .badge {
-            font-size: 0.5rem;
-            padding: 2px 14px;
-            border-radius: 60px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            background: var(--gold-glow);
-            color: var(--gold-light);
-            border: 1px solid var(--border-gold);
-            box-shadow: 0 0 20px rgba(212, 167, 69, 0.05);
-        }
-        .champion-card .info .stats-row {
-            display: flex;
-            gap: 16px;
-            margin-top: 4px;
-            flex-wrap: wrap;
-        }
-        .champion-card .info .stats-row .item {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .champion-card .info .stats-row .item strong {
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        .champion-card .info .stats-row .item .highlight {
-            color: var(--gold-light);
-            font-weight: 800;
-            font-size: 1.1rem;
-        }
-        .champion-card .progress-wrapper {
-            width: 100%;
-            margin-top: 10px;
-        }
-        .champion-card .progress-wrapper .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-            margin-bottom: 3px;
-        }
-        .champion-card .progress-bar {
-            width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .champion-card .progress-bar .fill {
             height: 100%;
-            background: var(--gold-gradient);
-            border-radius: 20px;
-            transition: width 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
-            width: 0%;
-        }
-
-        /* ===== قائمة اللاعبين ===== */
-        .players-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .player-card {
-            background: rgba(255, 255, 255, 0.015);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            backdrop-filter: blur(4px);
-        }
-        .player-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--border-gold);
-            transform: translateX(-3px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        .player-card .rank {
-            font-size: 0.9rem;
-            font-weight: 800;
-            min-width: 30px;
-            color: var(--text-secondary);
-        }
-        .player-card .rank.gold {
-            color: #FFD700;
-        }
-        .player-card .rank.silver {
-            color: #C0C0C0;
-        }
-        .player-card .rank.bronze {
-            color: #CD7F32;
-        }
-        .player-card .rank.tie {
-            color: var(--gold-light);
-            font-size: 0.7rem;
-        }
-        .player-card .avatar-sm {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, rgba(212, 167, 69, 0.12), rgba(212, 167, 69, 0.02));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.8rem;
-            color: var(--text-primary);
-            flex-shrink: 0;
-            border: 2px solid transparent;
-            transition: var(--transition);
-        }
-        .player-card .avatar-sm.gold-border {
-            border-color: #FFD700;
-        }
-        .player-card .avatar-sm.silver-border {
-            border-color: #C0C0C0;
-        }
-        .player-card .avatar-sm.bronze-border {
-            border-color: #CD7F32;
-        }
-        .player-card .info-sm {
-            flex: 1;
-            min-width: 0;
-        }
-        .player-card .info-sm .name-sm {
-            font-weight: 700;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-        .player-card .info-sm .name-sm .mini-badge {
-            font-size: 0.35rem;
-            padding: 1px 8px;
-            border-radius: 40px;
-            font-weight: 700;
-            background: var(--gold-glow);
-            color: var(--gold-light);
-        }
-        .player-card .info-sm .sub-sm {
-            font-size: 0.55rem;
-            color: var(--text-secondary);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .player-card .info-sm .sub-sm .highlight {
-            color: var(--gold-light);
-            font-weight: 600;
-        }
-        .player-card .points-sm {
-            background: var(--gold-gradient);
-            padding: 2px 14px;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 0.7rem;
-            color: #0b0f1a;
-            min-width: 32px;
-            text-align: center;
-            box-shadow: 0 2px 12px rgba(212, 167, 69, 0.10);
-        }
-        .player-card .progress-mini {
-            width: 50px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 20px;
             overflow: hidden;
-            margin-top: 3px;
-        }
-        .player-card .progress-mini .fill-mini {
-            height: 100%;
-            background: var(--gold-gradient);
-            border-radius: 20px;
-            transition: width 0.6s ease;
-            width: 0%;
-        }
-        .player-card .current-user-indicator {
-            position: absolute;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            border: 2px solid var(--gold);
-            border-radius: var(--radius-md);
-            pointer-events: none;
-            opacity: 0;
-            transition: var(--transition);
-            box-shadow: 0 0 40px rgba(212, 167, 69, 0.06);
-        }
-        .player-card .current-user-indicator.active {
-            opacity: 1;
-        }
-        .player-card .pulse-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulseDot 1.8s infinite;
-            flex-shrink: 0;
-        }
-        @keyframes pulseDot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.4;
-                transform: scale(0.7);
-            }
-        }
-
-        /* ===== شارة الإنجاز الواحدة ===== */
-        .achievement-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 0.5rem;
-            padding: 1px 8px;
-            border-radius: 40px;
-            background: var(--gold-glow);
-            border: 1px solid var(--border-gold);
-            color: var(--gold-light);
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .achievement-badge .icon {
-            font-size: 0.6rem;
-        }
-
-        .player-card .achievement {
-            margin-top: 2px;
-        }
-
-        /* ===== رسم بياني ===== */
-        .chart-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            margin-top: 14px;
-            box-shadow: var(--shadow-card);
-        }
-        .chart-container canvas {
-            max-height: 220px;
-            max-width: 100%;
-        }
-        .chart-container .chart-title {
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--gold-light);
-            margin-bottom: 8px;
-        }
-        .chart-container .chart-controls {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 8px;
-        }
-        .chart-container .chart-controls select {
-            padding: 4px 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-input);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            background: #0b0e14;
             color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-        .chart-container .chart-controls select:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px 16px;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.01);
-            border-radius: var(--radius-lg);
-            border: 1px dashed var(--border-subtle);
-            grid-column: 1/-1;
-        }
-        .empty-state .icon {
-            font-size: 2.2rem;
-            display: block;
-            margin-bottom: 6px;
+            margin: 0;
+            padding: 0;
         }
 
         /* ============================================================
-           تبويب الإحصائيات المتقدمة
+           LAYER 0 – شاشة سوداء + كأس + افتتاحية
            ============================================================ */
-        .stats-advanced {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            box-shadow: var(--shadow-card);
-        }
-        .stats-advanced .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .stats-advanced .stat-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .stats-advanced .stat-item:hover {
-            border-color: var(--border-gold);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .stats-advanced .stat-item .value {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--gold-light);
-        }
-        .stats-advanced .stat-item .label {
-            font-size: 0.55rem;
-            color: var(--text-secondary);
-            margin-top: 3px;
-        }
-
-        .stats-advanced .player-rank-list {
-            margin-top: 14px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 6px;
-        }
-        .stats-advanced .player-rank-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-        }
-        .stats-advanced .player-rank-item:hover {
-            border-color: var(--border-gold);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .stats-advanced .player-rank-item .rank-num {
-            font-weight: 800;
-            color: var(--text-secondary);
-            min-width: 26px;
-            font-size: 0.7rem;
-        }
-        .stats-advanced .player-rank-item .pname {
-            flex: 1;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        .stats-advanced .player-rank-item .ppoints {
-            font-weight: 800;
-            color: var(--gold-light);
-            font-size: 0.8rem;
-        }
-        .stats-advanced .player-rank-item .pacc {
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-        }
-
-        /* ============================================================
-           تبويب المقارنة
-           ============================================================ */
-        .compare-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            box-shadow: var(--shadow-card);
-        }
-        .compare-section .compare-search {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-            align-items: center;
-        }
-        .compare-section .compare-search input {
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.75rem;
-            transition: var(--transition);
-        }
-        .compare-section .compare-search input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 30px rgba(212, 167, 69, 0.05);
-        }
-        .compare-section .compare-search input::placeholder {
-            color: var(--text-muted);
-        }
-        .compare-section .compare-search button {
-            padding: 6px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-gold);
-            background: var(--gold-glow);
-            color: var(--gold-light);
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-            font-size: 0.7rem;
-        }
-        .compare-section .compare-search button:hover {
-            background: var(--gold);
-            color: #0b0f1a;
-            transform: translateY(-2px);
-        }
-
-        .compare-section .compare-result {
-            display: none;
-            animation: fadeInModal 0.3s ease;
-        }
-        .compare-section .compare-result.show {
-            display: block;
-        }
-
-        .compare-section .compare-card {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 14px;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin-top: 8px;
-        }
-        .compare-section .compare-card .player-col {
-            text-align: center;
-            padding: 6px;
-        }
-        .compare-section .compare-card .player-col .avatar-compare {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gold-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #0b0f1a;
-            margin: 0 auto 6px;
-            box-shadow: 0 0 30px rgba(212, 167, 69, 0.15);
-        }
-        .compare-section .compare-card .player-col .cname {
-            font-size: 0.95rem;
-            font-weight: 800;
-        }
-        .compare-section .compare-card .player-col .cstat {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 3px;
-        }
-        .compare-section .compare-card .player-col .cstat .num {
-            font-weight: 800;
-            color: var(--gold-light);
-            font-size: 1.2rem;
-        }
-        .compare-section .compare-card .player-col .cstat .num.green {
-            color: var(--success);
-        }
-        .compare-section .compare-card .player-col .cstat .num.red {
-            color: var(--danger);
-        }
-        .compare-section .compare-card .vs-divider {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--gold);
-            padding: 0 6px;
-        }
-        .compare-section .compare-card .player-type {
-            font-size: 0.6rem;
-            padding: 2px 10px;
-            border-radius: 40px;
-            background: var(--gold-glow);
-            color: var(--gold-light);
-            display: inline-block;
-            margin-top: 4px;
-            border: 1px solid var(--border-gold);
-        }
-        .compare-section .compare-card .risk-bar {
-            width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-        .compare-section .compare-card .risk-bar .fill-risk {
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.8s ease;
-        }
-        .compare-section .compare-card .risk-bar .fill-risk.high {
-            background: linear-gradient(90deg, var(--gold), #f25a6a);
-        }
-        .compare-section .compare-card .risk-bar .fill-risk.medium {
-            background: linear-gradient(90deg, var(--gold), var(--success));
-        }
-        .compare-section .compare-card .risk-bar .fill-risk.low {
-            background: var(--success);
-        }
-
-        .compare-section .compare-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-        }
-        .compare-section .compare-details .detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 0.7rem;
-        }
-        .compare-section .compare-details .detail-item .dlabel {
-            color: var(--text-secondary);
-        }
-        .compare-section .compare-details .detail-item .dvalue {
-            font-weight: 700;
-        }
-        .compare-section .compare-details .detail-item .dvalue.gold {
-            color: var(--gold-light);
-        }
-        .compare-section .compare-details .detail-item .dvalue.green {
-            color: var(--success);
-        }
-
-        /* ===== مودال ===== */
-        .modal-overlay {
-            display: none;
+        #introLayer {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(24px);
+            width: 100%;
+            height: 100%;
+            background: #0b0e14;
             z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            animation: fadeInModal 0.25s ease;
-        }
-        .modal-overlay.active {
             display: flex;
-        }
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
-            max-width: 700px;
-            width: 95%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.60);
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 8px;
-            left: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
+            transition: opacity 2.2s ease;
+            opacity: 1;
+            pointer-events: none;
+            padding: 20px;
         }
-        .modal-close:hover {
-            background: var(--danger-bg);
-            color: var(--danger);
+        #introLayer.hide {
+            opacity: 0;
+            pointer-events: none;
         }
-        .modal-title {
+
+        #introLayer .intro-trophy {
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 80px var(--gold-glow), 0 0 160px rgba(212, 167, 69, 0.15);
+            animation: introTrophyPulse 3s ease-in-out infinite;
+            margin-bottom: 16px;
+        }
+        @keyframes introTrophyPulse {
+            0%,
+            100% {
+                transform: scale(1) rotate(-2deg);
+                filter: drop-shadow(0 0 30px rgba(212, 167, 69, 0.2));
+            }
+            50% {
+                transform: scale(1.05) rotate(2deg);
+                filter: drop-shadow(0 0 60px rgba(212, 167, 69, 0.5));
+            }
+        }
+
+        .intro-text {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 4px;
             text-align: center;
-            font-size: 1rem;
-            font-weight: 800;
+            line-height: 2;
+            opacity: 0;
+            animation: introTextReveal 2.4s ease forwards 0.8s;
+            padding: 0 10px;
+        }
+        .intro-text strong {
             color: var(--gold-light);
-            margin-bottom: 3px;
-            padding-top: 4px;
-        }
-        .modal-subtitle {
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-        .player-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin: 12px 0;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            border: 1px solid var(--border-subtle);
-        }
-        .player-stats-grid .stat-box {
-            text-align: center;
-        }
-        .player-stats-grid .stat-box .stat-value {
-            font-size: 1.1rem;
-            font-weight: 800;
-        }
-        .player-stats-grid .stat-box .stat-value.gold {
-            color: var(--gold-light);
-        }
-        .player-stats-grid .stat-box .stat-value.green {
-            color: var(--success);
-        }
-        .player-stats-grid .stat-box .stat-value.red {
-            color: var(--danger);
-        }
-        .player-stats-grid .stat-box .stat-label {
-            font-size: 0.5rem;
-            color: var(--text-secondary);
-        }
-        .predictions-list {
-            max-height: 350px;
-            overflow-y: auto;
-            padding: 3px 0;
-        }
-        .player-prediction-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 8px 12px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: var(--transition);
-        }
-        .player-prediction-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--border-gold);
-        }
-        .player-prediction-item .num {
-            font-weight: 800;
-            color: var(--text-secondary);
-            min-width: 28px;
-            font-size: 0.65rem;
-        }
-        .player-prediction-item .match-info {
-            flex: 1;
-        }
-        .player-prediction-item .match-info .teams {
             font-weight: 700;
-            font-size: 0.75rem;
         }
-        .player-prediction-item .match-info .teams .flag {
+        @keyframes introTextReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .intro-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: introTextReveal 2s ease forwards 1.6s;
+        }
+
+        /* ============================================================
+           LAYER 1 – المشاهد (السلايدات)
+           ============================================================ */
+        .slides-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+            opacity: 0;
+            transform: scale(1.06) translateY(30px);
+            transition: opacity 1.6s ease, transform 1.6s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: none;
+            will-change: transform, opacity;
+            z-index: 1;
+            overflow-y: auto;
+            backface-visibility: hidden;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .slide.exit-left {
+            opacity: 0;
+            transform: scale(0.94) translateX(-40px) rotateY(4deg);
+        }
+        .slide.exit-right {
+            opacity: 0;
+            transform: scale(0.94) translateX(40px) rotateY(-4deg);
+        }
+
+        /* ============================================================
+           LAYER 2 – الخلفية السينمائية
+           ============================================================ */
+        .slide-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 30% 20%, rgba(212, 167, 69, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(74, 158, 255, 0.02) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.15;
+            box-shadow: 0 0 12px rgba(212, 167, 69, 0.05);
+            animation: particleDrift linear infinite;
+            will-change: transform;
+        }
+        @keyframes particleDrift {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.05;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(30px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .fog-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 30%, rgba(212, 167, 69, 0.01) 0%, transparent 60%);
+            animation: fogMove 18s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes fogMove {
+            0% {
+                transform: translateX(-10%) translateY(-5%) scale(1);
+            }
+            100% {
+                transform: translateX(10%) translateY(5%) scale(1.05);
+            }
+        }
+
+        .stadium-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 50% 90%, rgba(212, 167, 69, 0.02) 0%, transparent 40%),
+                radial-gradient(ellipse at 20% 70%, rgba(255, 255, 255, 0.005) 0%, transparent 30%),
+                radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.005) 0%, transparent 30%);
+            pointer-events: none;
+            animation: stadiumPulse 12s ease-in-out infinite;
+        }
+        @keyframes stadiumPulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
+
+        .camera-flash {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            animation: flashRandom 6s infinite;
+            pointer-events: none;
+        }
+        @keyframes flashRandom {
+            0%,
+            100% {
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            15% {
+                opacity: 0;
+            }
+            40% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            55% {
+                opacity: 0;
+            }
+            80% {
+                opacity: 0;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            95% {
+                opacity: 0;
+            }
+        }
+
+        /* ============================================================
+           LAYER 3 – محتوى الشريحة
+           ============================================================ */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px) saturate(1.2);
+            -webkit-backdrop-filter: blur(12px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), inset 0 0 60px rgba(212, 167, 69, 0.01);
+            transition: var(--transition);
+        }
+
+        .chapter-tag {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--gold-light);
+            background: rgba(212, 167, 69, 0.08);
+            border: 1px solid rgba(212, 167, 69, 0.12);
+            padding: 3px 16px;
+            border-radius: 60px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .slide-content h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 80px rgba(212, 167, 69, 0.06);
+            letter-spacing: -0.3px;
+        }
+        .slide-content h1 .highlight {
+            color: var(--text-primary);
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+
+        .slide-content .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 16px;
+            padding: 0 10px;
+        }
+        .slide-content .subtitle strong {
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+        .slide-content .desc {
             font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 20px;
+            line-height: 1.8;
+            padding: 0 10px;
         }
-        .player-prediction-item .match-info .pred {
-            font-size: 0.6rem;
+        .slide-content .desc .accent {
             color: var(--gold-light);
             font-weight: 600;
         }
-        .player-prediction-item .match-info .status {
-            font-size: 0.5rem;
-            padding: 1px 10px;
-            border-radius: 40px;
-            font-weight: 700;
+
+        /* ============================================================
+           عناصر خاصة (الكأس، Spotlight، منصة التتويج)
+           ============================================================ */
+        .trophy-wrapper {
+            position: relative;
             display: inline-block;
-            margin-top: 2px;
+            margin: 4px 0;
         }
-        .player-prediction-item .match-info .status.correct {
-            background: var(--success-bg);
-            color: var(--success);
+        .trophy-3d {
+            display: inline-block;
+            font-size: 3.8rem;
+            filter: drop-shadow(0 0 40px rgba(212, 167, 69, 0.15));
+            animation: trophySpin 14s linear infinite, trophyGlow 3s ease-in-out infinite alternate;
+            transform-origin: center;
+            will-change: transform;
         }
-        .player-prediction-item .match-info .status.wrong {
-            background: var(--danger-bg);
-            color: var(--danger);
+        @keyframes trophySpin {
+            0% {
+                transform: rotateY(0deg) scale(1);
+            }
+            100% {
+                transform: rotateY(360deg) scale(1);
+            }
         }
-        .player-prediction-item .match-info .status.pending {
-            background: var(--gold-glow);
-            color: var(--gold-light);
+        @keyframes trophyGlow {
+            0% {
+                filter: drop-shadow(0 0 20px rgba(212, 167, 69, 0.1)) brightness(1);
+            }
+            100% {
+                filter: drop-shadow(0 0 60px rgba(212, 167, 69, 0.3)) brightness(1.15);
+            }
         }
-        .player-prediction-item .time {
-            font-size: 0.5rem;
-            color: var(--text-secondary);
-            font-family: monospace;
-            white-space: nowrap;
+        .trophy-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+            animation: lensFlare 6s ease-in-out infinite alternate;
+        }
+        @keyframes lensFlare {
+            0% {
+                transform: translateX(-10%) translateY(-10%) scale(0.8);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateX(20%) translateY(20%) scale(1.4);
+                opacity: 0.6;
+            }
         }
 
-        /* ===== Toast ===== */
-        .copy-toast {
-            position: fixed;
-            bottom: 20px;
+        .spotlight {
+            position: relative;
+        }
+        .spotlight::before {
+            content: '';
+            position: absolute;
+            top: -20%;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(49, 214, 122, 0.96);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            z-index: 99999;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
-            animation: fadeInModal 0.25s ease;
-            backdrop-filter: blur(12px);
-            display: none;
+            width: 90%;
+            height: 140%;
+            background: radial-gradient(ellipse at center, rgba(212, 167, 69, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            animation: spotlightPulse 3s ease-in-out infinite alternate;
         }
-        .copy-toast.show {
-            display: block;
+        @keyframes spotlightPulse {
+            0% {
+                opacity: 0.3;
+                transform: translateX(-50%) scale(0.9);
+            }
+            100% {
+                opacity: 0.8;
+                transform: translateX(-50%) scale(1.1);
+            }
         }
 
-        /* ===== استجابة ===== */
-        @media (max-width: 640px) {
-            body {
-                padding: 4px;
+        /* ============================================================
+           PODIUM – منصة التتويج (متجاوبة)
+           ============================================================ */
+        .podium-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin: 10px 0;
+            perspective: 600px;
+        }
+        .podium-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            background: rgba(212, 167, 69, 0.04);
+            border: 1px solid rgba(212, 167, 69, 0.10);
+            border-radius: var(--radius-md);
+            padding: 8px 12px 6px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            transition: transform 0.4s ease;
+            transform: rotateX(2deg) rotateY(-1deg);
+            min-width: 80px;
+            flex: 1;
+            max-width: 160px;
+        }
+        .podium-step:hover {
+            transform: rotateX(0) rotateY(0) translateY(-4px);
+        }
+        .podium-step .rank-icon {
+            font-size: 2rem;
+            margin-bottom: 2px;
+        }
+        .podium-step .p-name {
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: var(--gold-light);
+            text-align: center;
+            line-height: 1.3;
+        }
+        .podium-step .p-stats {
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .podium-1 {
+            height: 120px;
+            background: rgba(212, 167, 69, 0.08);
+            border-color: var(--gold);
+            box-shadow: 0 0 50px rgba(212, 167, 69, 0.06);
+            max-width: 180px;
+        }
+        .podium-2 {
+            height: 100px;
+        }
+        .podium-3 {
+            height: 80px;
+        }
+
+        /* ============================================================
+           COUNTER
+           ============================================================ */
+        .counter {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ============================================================
+           STATS ROW
+           ============================================================ */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 12px 0 8px;
+        }
+        .stats-row .stat-item {
+            text-align: center;
+            min-width: 60px;
+        }
+        .stats-row .stat-item .number {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+        }
+        .stats-row .stat-item .label {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* ============================================================
+           شاشة النهاية (النجوم)
+           ============================================================ */
+        #endCredits {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #080b10;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 3s ease;
+            padding: 20px;
+        }
+        #endCredits.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #endCredits .starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #endCredits .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: starTwinkle 4s ease-in-out infinite alternate;
+        }
+        @keyframes starTwinkle {
+            0% {
+                opacity: 0.05;
+                transform: scale(0.8);
             }
-            .header {
-                padding: 4px 10px;
-                min-height: 34px;
+            100% {
+                opacity: 0.5;
+                transform: scale(1.2);
             }
-            .header .actions button {
+        }
+        #endCredits .end-text {
+            position: relative;
+            z-index: 2;
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 4px;
+            text-align: center;
+            line-height: 2;
+            opacity: 0;
+            animation: endTextAppear 3s ease forwards 1s;
+        }
+        #endCredits .end-text strong {
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+        @keyframes endTextAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ============================================================
+           NAV & MUTE BUTTON
+           ============================================================ */
+        .nav-controls {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 14, 23, 0.1);
+            backdrop-filter: blur(16px);
+            padding: 3px 12px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            opacity: 0.15;
+            transition: opacity 0.4s ease;
+        }
+        .nav-controls:hover {
+            opacity: 0.5;
+        }
+        .nav-controls .dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .nav-controls .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .nav-controls .dot.active {
+            background: var(--gold);
+            width: 18px;
+            border-radius: 10px;
+            box-shadow: 0 0 16px rgba(212, 167, 69, 0.15);
+        }
+
+        #muteBtn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+        }
+        #muteBtn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--gold);
+            color: var(--gold-light);
+        }
+
+        /* ============================================================
+           RESPONSIVE – تحسينات الجوال
+           ============================================================ */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 14px 10px;
+                align-items: center;
+                padding-top: 20px;
+            }
+            .slide-content h1 {
+                font-size: 2rem;
+                margin-bottom: 6px;
+            }
+            .slide-content .subtitle {
+                font-size: 0.95rem;
+            }
+            .slide-content .desc {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+            .chapter-tag {
                 font-size: 0.5rem;
-                padding: 3px 8px;
+                padding: 2px 12px;
+                margin-bottom: 6px;
             }
-            .main-tabs .tab-btn {
-                padding: 4px 10px;
-                font-size: 0.6rem;
-                min-width: 60px;
-                flex: 1 1 auto;
+            .trophy-3d {
+                font-size: 3rem;
             }
-            .leaderboard-section {
-                padding: 10px 10px 12px;
-            }
-            .champion-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 8px;
-                padding: 14px 12px;
-            }
-            .champion-card .rank-badge {
-                font-size: 2.2rem;
-                min-width: auto;
-            }
-            .champion-card .avatar {
-                width: 52px;
-                height: 52px;
-                font-size: 1.3rem;
-            }
-            .champion-card .info .name {
-                justify-content: center;
-                font-size: 1.1rem;
-            }
-            .champion-card .info .stats-row {
-                justify-content: center;
+            .stats-row {
                 gap: 10px;
             }
-            .players-list {
-                grid-template-columns: 1fr;
-                gap: 4px;
+            .stats-row .stat-item .number {
+                font-size: 1.6rem;
             }
-            .player-card {
-                padding: 6px 10px;
+            .stats-row .stat-item .label {
+                font-size: 0.5rem;
             }
-            .player-card .info-sm .name-sm {
-                font-size: 0.65rem;
+            .counter {
+                font-size: 1.6rem;
             }
-            .player-card .points-sm {
+
+            .podium-container {
+                gap: 6px;
+            }
+            .podium-step {
+                min-width: 60px;
+                padding: 4px 6px;
+                max-width: 120px;
+            }
+            .podium-step .rank-icon {
+                font-size: 1.4rem;
+            }
+            .podium-step .p-name {
                 font-size: 0.6rem;
-                padding: 2px 10px;
             }
-            .player-card .progress-mini {
-                width: 35px;
+            .podium-step .p-stats {
+                font-size: 0.45rem;
             }
-            .modal-content {
-                padding: 12px 14px;
-                max-width: 98%;
+            .podium-1 {
+                height: 90px;
+                max-width: 130px;
             }
-            .player-stats-grid {
-                grid-template-columns: 1fr 1fr;
+            .podium-2 {
+                height: 75px;
+            }
+            .podium-3 {
+                height: 60px;
+            }
+
+            .other-players-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
                 gap: 4px;
-                padding: 8px;
             }
-            .player-prediction-item {
-                flex-wrap: wrap;
-                gap: 4px;
+
+            .intro-text {
+                font-size: 1.1rem;
             }
-            .lb-period-tabs {
-                justify-content: center;
-            }
-            .lb-period-tabs .period-btn {
-                padding: 3px 10px;
-                font-size: 0.55rem;
-            }
-            .compare-section .compare-card {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            .compare-section .compare-card .vs-divider {
+            #endCredits .end-text {
                 font-size: 1.2rem;
             }
-            .compare-section .compare-details {
-                grid-template-columns: 1fr;
+            .glass-card {
+                padding: 10px !important;
             }
-            .stats-advanced .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            #muteBtn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+                top: 10px;
+                left: 10px;
             }
-            .stats-advanced .player-rank-list {
-                grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 480px) {
+            .slide-content h1 {
+                font-size: 1.6rem;
             }
-            .chart-container canvas {
-                max-height: 150px;
+            .slide-content .subtitle {
+                font-size: 0.8rem;
             }
+            .slide-content .desc {
+                font-size: 0.7rem;
+            }
+            .trophy-3d {
+                font-size: 2.4rem;
+            }
+            .podium-step {
+                min-width: 50px;
+                max-width: 100px;
+            }
+            .podium-1 {
+                height: 75px;
+                max-width: 110px;
+            }
+            .podium-2 {
+                height: 60px;
+            }
+            .podium-3 {
+                height: 50px;
+            }
+            .podium-step .rank-icon {
+                font-size: 1.2rem;
+            }
+            .podium-step .p-name {
+                font-size: 0.5rem;
+            }
+            .podium-step .p-stats {
+                font-size: 0.4rem;
+            }
+            .counter {
+                font-size: 1.2rem;
+            }
+            .stats-row .stat-item .number {
+                font-size: 1.2rem;
+            }
+            .intro-text {
+                font-size: 0.9rem;
+            }
+            #endCredits .end-text {
+                font-size: 1rem;
+            }
+            .nav-controls {
+                bottom: 10px;
+                padding: 2px 8px;
+                gap: 6px;
+            }
+            .nav-controls .dot {
+                width: 4px;
+                height: 4px;
+            }
+            .nav-controls .dot.active {
+                width: 14px;
+            }
+            .chapter-tag {
+                font-size: 0.4rem;
+                padding: 2px 10px;
+            }
+            .other-players-grid {
+                grid-template-columns: 1fr 1fr !important;
+            }
+        }
+
+        /* ============================================================
+           UTILITIES
+           ============================================================ */
+        .text-gold {
+            color: var(--gold-light);
+        }
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .mt-8 {
+            margin-top: 6px;
+        }
+        .mt-16 {
+            margin-top: 10px;
+        }
+        .mb-8 {
+            margin-bottom: 6px;
+        }
+        .mb-16 {
+            margin-bottom: 10px;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gap-8 {
+            gap: 6px;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <!-- ============================================================
+    MUTE BUTTON
+    ============================================================ -->
+    <button id="muteBtn" title="كتم/تفعيل الصوت"><i class="fas fa-volume-up"></i></button>
 
-        <!-- ===== HEADER – بدون أي عبارات ===== -->
-        <div class="header">
-            <div class="actions">
-                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
-                <button onclick="clearCacheAndReload()">🗑️</button>
-                <button onclick="location.reload()">🔄</button>
-            </div>
+    <!-- ============================================================
+    INTRO LAYER
+    ============================================================ -->
+    <div id="introLayer">
+        <div class="intro-trophy"><i class="fas fa-trophy"></i></div>
+        <div class="intro-text">
+            كل بطولة لها قصة...<br />
+            وكل قصة لها <strong>أبطال</strong>.
         </div>
-
-        <!-- ===== التبويبات الرئيسية ===== -->
-        <div class="main-tabs" id="mainTabs">
-            <button class="tab-btn active" data-tab="leaderboard" onclick="switchTab('leaderboard')">🏆 الترتيب</button>
-            <button class="tab-btn" data-tab="stats" onclick="switchTab('stats')">📊 إحصائيات</button>
-            <button class="tab-btn" data-tab="compare" onclick="switchTab('compare')">⚔️ مقارنة</button>
-            <button class="tab-btn" data-tab="chart" onclick="switchTab('chart')">📈 تقدم</button>
-        </div>
-
-        <!-- ===== تبويب الترتيب ===== -->
-        <div class="tab-content active" id="tab-leaderboard">
-            <div class="leaderboard-section" id="leaderboardSection">
-                <div class="lb-header">
-                    <div class="lb-stats">
-                        <span class="stat">👥 <span class="num" id="lbTotalPlayers">0</span></span>
-                        <span class="stat">📊 <span class="num" id="lbTotalPredictions">0</span></span>
-                    </div>
-                </div>
-                <div class="lb-period-tabs">
-                    <button class="period-btn active" data-period="all" onclick="setLeaderboardPeriod('all')">📊 عام</button>
-                    <button class="period-btn" data-period="24h" onclick="setLeaderboardPeriod('24h')">🕒 24 ساعة</button>
-                </div>
-                <div id="leaderboardContainer">
-                    <div class="empty-state"><span class="icon">⏳</span> جاري تحميل الترتيب...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== تبويب الإحصائيات المتقدمة ===== -->
-        <div class="tab-content" id="tab-stats">
-            <div class="stats-advanced" id="statsAdvanced">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-                    <h3 style="font-size:0.9rem;color:var(--gold-light);">📊 إحصائيات اللاعبين</h3>
-                    <span style="font-size:0.6rem;color:var(--text-secondary);" id="statsTotalPlayers">0 لاعب</span>
-                </div>
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-item">
-                        <div class="value" id="statAvgPoints">0</div>
-                        <div class="label">⭐ متوسط النقاط</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value" id="statMaxPoints">0</div>
-                        <div class="label">🏆 أعلى نقاط</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value" id="statAvgAccuracy">0%</div>
-                        <div class="label">🎯 متوسط الدقة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value" id="statTopAccuracy">0%</div>
-                        <div class="label">🥇 أعلى دقة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value" id="statTotalCorrect">0</div>
-                        <div class="label">✅ إجمالي الصحيحة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="value" id="statTotalWrong">0</div>
-                        <div class="label">❌ إجمالي الخاطئة</div>
-                    </div>
-                </div>
-                <h4 style="font-size:0.8rem;color:var(--text-secondary);margin-top:14px;margin-bottom:8px;">📋 ترتيب جميع اللاعبين</h4>
-                <div class="player-rank-list" id="playerRankList">
-                    <div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== تبويب المقارنة ===== -->
-        <div class="tab-content" id="tab-compare">
-            <div class="compare-section">
-                <div class="compare-search">
-                    <input type="text" id="compareInput1" placeholder="👤 لاعب 1" />
-                    <span style="color:var(--text-secondary);font-weight:700;">VS</span>
-                    <input type="text" id="compareInput2" placeholder="👤 لاعب 2" />
-                    <button onclick="comparePlayers()">⚔️ مقارنة</button>
-                </div>
-                <div class="compare-result" id="compareResult"></div>
-            </div>
-        </div>
-
-        <!-- ===== تبويب الرسم البياني ===== -->
-        <div class="tab-content" id="tab-chart">
-            <div class="chart-container">
-                <div class="chart-title">📈 تقدم نقاط اللاعبين</div>
-                <div class="chart-controls">
-                    <select id="chartPlayerSelect" onchange="updateChart()">
-                        <option value="">-- اختر لاعب --</option>
-                    </select>
-                </div>
-                <canvas id="progressChart"></canvas>
-                <div style="text-align:center;font-size:0.55rem;color:var(--text-muted);margin-top:6px;">
-                    النقاط التراكمية حسب ترتيب المباريات
-                </div>
-            </div>
-        </div>
-
-        <footer style="text-align:center;font-size:0.5rem;color:var(--text-muted);border-top:1px solid var(--border-subtle);padding-top:12px;margin-top:12px;">
-            غرفة معلمي سعيد بن العاص
-        </footer>
+        <div class="intro-sub">كأس العالم 2026</div>
     </div>
 
-    <!-- ===== MODAL ===== -->
-    <div class="modal-overlay" id="playerPredictionsModal">
-        <div class="modal-content">
-            <button class="modal-close" id="playerModalCloseBtn">✕</button>
-            <div class="modal-title" id="playerModalTitle">📋 توقعات اللاعب</div>
-            <div id="playerModalSubtitle" class="modal-subtitle"></div>
-            <div class="player-stats-grid" id="playerStatsGrid">
-                <div class="stat-box">
-                    <div class="stat-value gold" id="playerPoints">0</div>
-                    <div class="stat-label">🏆 النقاط</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value green" id="playerCorrect">0</div>
-                    <div class="stat-label">✅ صحيحة</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value red" id="playerWrong">0</div>
-                    <div class="stat-label">❌ خاطئة</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="playerTotal">0</div>
-                    <div class="stat-label">📊 إجمالي</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value gold" id="playerAccuracy">0%</div>
-                    <div class="stat-label">🎯 النجاح</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="playerRank">-</div>
-                    <div class="stat-label">🏅 الترتيب</div>
-                </div>
-            </div>
-            <div class="predictions-list" id="playerPredictionsList">
-                <div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div>
-            </div>
+    <!-- ============================================================
+    END CREDITS
+    ============================================================ -->
+    <div id="endCredits">
+        <div class="starfield" id="starfield"></div>
+        <div class="end-text">
+            الذكريات تبقى...<br />
+            <strong>والبطولات تنتهي.</strong>
+            <br /><br />
+            <span style="font-size:0.6em;color:var(--text-muted);">شكراً لكم</span>
         </div>
     </div>
 
-    <!-- ===== TOAST ===== -->
-    <div class="copy-toast" id="copyToast">✅ تم النسخ!</div>
+    <!-- ============================================================
+    SLIDES WRAPPER
+    ============================================================ -->
+    <div class="slides-wrapper" id="slidesWrapper">
 
+        <!-- الخلفية العامة -->
+        <div class="slide-bg">
+            <div class="stadium-bg"></div>
+            <div class="fog-layer"></div>
+            <div class="particles-container" id="particlesContainer"></div>
+            <div class="camera-flash" style="top:15%;left:15%;animation-delay:0s;"></div>
+            <div class="camera-flash" style="top:55%;left:80%;animation-delay:2s;"></div>
+            <div class="camera-flash" style="top:35%;left:50%;animation-delay:4s;"></div>
+            <div class="camera-flash" style="top:75%;left:25%;animation-delay:1s;"></div>
+            <div class="camera-flash" style="top:8%;left:70%;animation-delay:3s;"></div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 0 – الرحلة
+        ============================================================ -->
+        <div class="slide active" data-index="0">
+            <div class="slide-content">
+                <span class="chapter-tag">Chapter I</span>
+                <h1>الرحلة</h1>
+                <div class="trophy-wrapper">
+                    <span class="trophy-3d"><i class="fas fa-trophy"></i></span>
+                </div>
+                <p class="subtitle" style="font-size:1.1rem;">
+                    <strong>48</strong> منتخباً · <strong>39</strong> يوماً · <strong>104</strong> مباراة
+                </p>
+                <div class="stats-row" id="heroStats">
+                    <div class="stat-item"><span class="counter" id="heroPlayers">48</span><span class="label"><i class="fas fa-users"></i> منتخب</span></div>
+                    <div class="stat-item"><span class="counter" id="heroPredictions">649</span><span class="label"><i class="fas fa-chart-bar"></i> توقع</span></div>
+                    <div class="stat-item"><span class="counter" id="heroPoints">55</span><span class="label"><i class="fas fa-medal"></i> أعلى نقاط</span></div>
+                </div>
+                <div class="credit-badge" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(212,167,69,0.06);padding:4px 16px;border-radius:60px;font-size:0.65rem;color:var(--text-secondary);backdrop-filter:blur(4px);margin-top:6px;">
+                    <i class="fas fa-star" style="color:var(--gold-light);"></i>
+                    الفكرة من <span class="name" style="color:var(--gold-light);font-weight:800;">فهد الخالدي</span>
+                    <i class="fas fa-star" style="color:var(--gold-light);"></i>
+                </div>
+                <div style="margin-top:4px;font-size:0.55rem;color:var(--text-muted);opacity:0.5;"><i class="fas fa-school"></i> غرفة معلمي سعيد بن العاص</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 1 – أبرز اللحظات
+        ============================================================ -->
+        <div class="slide" data-index="1">
+            <div class="slide-content">
+                <span class="chapter-tag">Chapter II</span>
+                <h1>أبرز <span class="highlight">اللحظات</span></h1>
+                <p class="desc">من التوقعات الحماسية إلى النقاشات المثيرة، <span class="text-gold">صنعتم</span> أجواءً لا تُضاهى.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0;">
+                    <div class="glass-card" style="padding:12px;text-align:center;">
+                        <i class="fas fa-vote-yea" style="font-size:2rem;color:var(--gold-light);display:block;margin-bottom:4px;"></i>
+                        <h4 style="color:var(--gold-light);font-size:0.75rem;">توقعات حماسية</h4>
+                        <p style="font-size:0.6rem;color:var(--text-secondary);">649 توقع</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px;text-align:center;">
+                        <i class="fas fa-trophy" style="font-size:2rem;color:var(--gold-light);display:block;margin-bottom:4px;"></i>
+                        <h4 style="color:var(--gold-light);font-size:0.75rem;">منافسة شرسة</h4>
+                        <p style="font-size:0.6rem;color:var(--text-secondary);">10 لاعبين</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px;text-align:center;">
+                        <i class="fas fa-comments" style="font-size:2rem;color:var(--gold-light);display:block;margin-bottom:4px;"></i>
+                        <h4 style="color:var(--gold-light);font-size:0.75rem;">نقاشات ممتعة</h4>
+                        <p style="font-size:0.6rem;color:var(--text-secondary);">تحليلات مميزة</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px;text-align:center;">
+                        <i class="fas fa-party-horn" style="font-size:2rem;color:var(--gold-light);display:block;margin-bottom:4px;"></i>
+                        <h4 style="color:var(--gold-light);font-size:0.75rem;">لحظات الفرح</h4>
+                        <p style="font-size:0.6rem;color:var(--text-secondary);">كل هدف احتفال</p>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-secondary);"><i class="fas fa-bolt" style="color:var(--gold-light);"></i> روح المنافسة والمرح هي الفائز الأكبر</p>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 2 – الأرقام
+        ============================================================ -->
+        <div class="slide" data-index="2">
+            <div class="slide-content">
+                <span class="chapter-tag">Chapter III</span>
+                <h1>الأرقام <span class="highlight">تتحدث</span></h1>
+                <p class="desc">تعكس <span class="text-gold">حجم التفاعل</span> والشغف الذي عشناه.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0;">
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">48</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-users"></i> منتخب</div>
+                    </div>
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">104</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-futbol"></i> مباراة</div>
+                    </div>
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">39</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-calendar-alt"></i> يوم</div>
+                    </div>
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">649</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-chart-bar"></i> توقع</div>
+                    </div>
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">10</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-user"></i> لاعبين</div>
+                    </div>
+                    <div class="glass-card" style="padding:10px;text-align:center;">
+                        <div style="font-size:1.6rem;font-weight:900;color:var(--gold-light);">55</div>
+                        <div style="font-size:0.5rem;color:var(--text-secondary);"><i class="fas fa-trophy"></i> أعلى نقاط</div>
+                    </div>
+                </div>
+                <div style="font-size:0.6rem;color:var(--text-muted);"><i class="fas fa-check-circle" style="color:var(--success);"></i> متوسط النقاط: 41.6</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 3 – ترتيب لوحة المتصدرين
+        ============================================================ -->
+        <div class="slide" data-index="3">
+            <div class="slide-content spotlight">
+                <span class="chapter-tag">Chapter IV</span>
+                <h1>ترتيب <span class="highlight">لوحة المتصدرين</span></h1>
+                <div id="championContainer" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:8px 0;">
+                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                </div>
+                <p style="font-size:0.6rem;color:var(--text-muted);margin-top:4px;"><i class="fas fa-crown" style="color:var(--gold-light);"></i> كل لاعب أضاف روحاً فريدة</p>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 4 – شكراً لكم
+        ============================================================ -->
+        <div class="slide" data-index="4">
+            <div class="slide-content">
+                <span class="chapter-tag">Chapter V</span>
+                <h1 style="font-size:2.4rem;">شكراً <span class="highlight">لكم</span></h1>
+                <p class="desc" style="font-size:0.9rem;">
+                    بفضل <span class="text-gold">تفاعلكم</span> و<span class="text-gold">روحكم</span>، تحولت المباريات إلى مناسبات جماعية ممتعة.
+                </p>
+                <div class="glass-card" style="padding:16px 20px;max-width:500px;margin:0 auto;">
+                    <p style="font-size:0.95rem;color:var(--gold-light);font-weight:700;"><i class="fas fa-quote-right"></i> “أضفتم رونقاً لمباريات كأس العالم”</p>
+                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;">كل توقع، كل نقاش، كل لحظة فرح كانت جزءاً من هذه التجربة.</p>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:10px;"><i class="fas fa-star" style="color:var(--gold-light);"></i> شكراً لكم جميعاً، أنتم صنعتم البطولة.</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SLIDE 5 – النهاية
+        ============================================================ -->
+        <div class="slide" data-index="5">
+            <div class="slide-content">
+                <span class="chapter-tag">Final Chapter</span>
+                <h1 style="font-size:2.4rem;">النهاية</h1>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0;">
+                    <span class="trophy-3d" style="font-size:3rem;animation-duration:8s;"><i class="fas fa-trophy"></i></span>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);max-width:400px;">
+                        شكراً لكل زميل شارك وتفاعل، وجعل من هذه البطولة تجربة لا تُنسى.
+                    </p>
+                    <div style="background:var(--gold-glow);border:1px solid rgba(212,167,69,0.15);padding:4px 20px;border-radius:60px;margin:4px 0;">
+                        <span style="font-size:1rem;font-weight:900;background:var(--gold-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;">
+                            <i class="fas fa-pen-fancy"></i> فهد الخالدي
+                        </span>
+                    </div>
+                    <p style="font-size:0.6rem;color:var(--text-muted);"><i class="fas fa-school"></i> غرفة معلمي سعيد بن العاص</p>
+                </div>
+                <div style="font-size:0.8rem;color:var(--gold-light);margin-top:6px;"><i class="fas fa-rocket"></i> إلى البطولة القادمة، ومعاً نصنع المزيد <i class="fas fa-rocket"></i></div>
+                <div style="margin-top:8px;font-size:0.5rem;color:var(--text-muted);opacity:0.4;"><i class="fas fa-copyright"></i> جميع الحقوق محفوظة</div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="nav-controls" id="navControls">
+            <div class="dots" id="dotsContainer"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – البيانات الثابتة والتحكم في العرض
+    ============================================================ -->
     <script>
         // ============================================================
-        //  CONFIGURATION
+        //  البيانات الثابتة
         // ============================================================
-        const SUPABASE_URL = "https://szjxwhsmefqpfcebtvei.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_0um28lgPMHcjDOThT0UgDA_K-Y7Wmx3";
-
-        let currentLeaderboardPeriod = 'all';
-        let state = {
-            predictions: [],
-            previousGamesData: [],
-            loaded: false,
-            loading: false,
-            playersData: {}
+        const data = {
+            totalTeams: 48,
+            totalDays: 39,
+            totalMatches: 104,
+            totalPredictions: 649,
+            topPoints: 55,
+            players: [
+                { name: "عماد", points: 55, rank: 1 },
+                { name: "محمد", points: 54, rank: 2 },
+                { name: "lody", points: 47, rank: 3 },
+                { name: "Hamad Alahmadi", points: 47, rank: 4 },
+                { name: "يسري", points: 47, rank: 5 },
+                { name: "فهد الخالدي", points: 47, rank: 6 },
+                { name: "أصيل", points: 44, rank: 7 },
+                { name: "ابو زياد", points: 36, rank: 8 },
+                { name: "نواف", points: 33, rank: 9 },
+                { name: "ابو راكان", points: 6, rank: 10 }
+            ]
         };
 
-        let chartInstance = null;
-
         // ============================================================
-        //  Supabase Client
+        //  عرض ترتيب المتصدرين (منصة التتويج)
         // ============================================================
-        let supabaseClient = null;
-        try {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log("✅ Supabase client initialized");
-        } catch (e) {
-            console.error("❌ Supabase init error:", e);
-        }
+        function renderLeaderboard() {
+            const container = document.getElementById('championContainer');
+            const top3 = data.players.slice(0, 3);
+            const rest = data.players.slice(3);
 
-        // ============================================================
-        //  CACHE HELPERS
-        // ============================================================
-        const CACHE_KEY = "wc_cache_v4";
-        const CACHE_TIME = 2 * 60 * 1000;
+            let html = `<div class="podium-container">`;
 
-        function setCache(key, value) {
-            try {
-                localStorage.setItem(key, JSON.stringify({ value, time: Date.now() }));
-            } catch (e) { /* ignore */ }
-        }
-
-        function getCache(key) {
-            try {
-                const raw = localStorage.getItem(key);
-                if (!raw) return null;
-                const parsed = JSON.parse(raw);
-                if (Date.now() - parsed.time > CACHE_TIME) {
-                    localStorage.removeItem(key);
-                    return null;
-                }
-                return parsed.value;
-            } catch { return null; }
-        }
-
-        function clearCache() {
-            localStorage.removeItem("games");
-            localStorage.removeItem("predictions");
-            localStorage.removeItem(CACHE_KEY);
-            console.log("🗑️ تم مسح الكاش");
-        }
-
-        // ============================================================
-        //  TRANSLATION HELPERS
-        // ============================================================
-        const nameMapping = {
-            "مکزیک": "المكسيك",
-            "Mexico": "المكسيك",
-            "مكسيك": "المكسيك",
-            "آفریقای جنوبی": "جنوب أفريقيا",
-            "South Africa": "جنوب أفريقيا",
-            "افریقای جنوبی": "جنوب أفريقيا",
-            "کره جنوبی": "كوريا الجنوبية",
-            "South Korea": "كوريا الجنوبية",
-            "جمهوری چک": "التشيك",
-            "Czech Republic": "التشيك",
-            "چک": "التشيك",
-            "کانادا": "كندا",
-            "Canada": "كندا",
-            "بوسنی و هرزگوین": "البوسنة والهرسك",
-            "Bosnia and Herzegovina": "البوسنة والهرسك",
-            "آمریکا": "أمريكا",
-            "United States": "أمريكا",
-            "امریکا": "أمريكا",
-            "پاراگوئه": "باراغواي",
-            "Paraguay": "باراغواي",
-            "هائیتی": "هايتي",
-            "Haiti": "هايتي",
-            "اسکاتلند": "إسكتلندا",
-            "Scotland": "إسكتلندا",
-            "برزیل": "البرازيل",
-            "Brazil": "البرازيل",
-            "برزیل": "البرازيل",
-            "مراکش": "المغرب",
-            "Morocco": "المغرب",
-            "مراكش": "المغرب",
-            "قطر": "قطر",
-            "Qatar": "قطر",
-            "سوئیس": "سويسرا",
-            "Switzerland": "سويسرا",
-            "سویس": "سويسرا",
-            "ساحل عاج": "ساحل العاج",
-            "Ivory Coast": "ساحل العاج",
-            "اکوادور": "الإكوادور",
-            "Ecuador": "الإكوادور",
-            "آلمان": "ألمانيا",
-            "Germany": "ألمانيا",
-            "کوراسائو": "كوراساو",
-            "Curaçao": "كوراساو",
-            "کوراساو": "كوراساو",
-            "هلند": "هولندا",
-            "Netherlands": "هولندا",
-            "ژاپن": "اليابان",
-            "Japan": "اليابان",
-            "سوئد": "السويد",
-            "Sweden": "السويد",
-            "تونس": "تونس",
-            "Tunisia": "تونس",
-            "ایران": "إيران",
-            "Iran": "إيران",
-            "نیوزیلند": "نيوزيلندا",
-            "New Zealand": "نيوزيلندا",
-            "اسپانیا": "إسبانيا",
-            "Spain": "إسبانيا",
-            "کیپ ورد": "الرأس الأخضر",
-            "Cape Verde": "الرأس الأخضر",
-            "بلژیک": "بلجيكا",
-            "Belgium": "بلجيكا",
-            "مصر": "مصر",
-            "Egypt": "مصر",
-            "عربستان": "السعودية",
-            "عربستان سعودی": "السعودية",
-            "سعودی": "السعودية",
-            "Saudi Arabia": "السعودية",
-            "اروگوئه": "أوروغواي",
-            "Uruguay": "أوروغواي",
-            "فرانسه": "فرنسا",
-            "France": "فرنسا",
-            "سنگال": "السنغال",
-            "Senegal": "السنغال",
-            "عراق": "العراق",
-            "Iraq": "العراق",
-            "نروژ": "النرويج",
-            "Norway": "النرويج",
-            "آرژانتین": "الأرجنتين",
-            "Argentina": "الأرجنتين",
-            "ارژانتین": "الأرجنتين",
-            "الجزایر": "الجزائر",
-            "Algeria": "الجزائر",
-            "اتریش": "النمسا",
-            "Austria": "النمسا",
-            "اتریش": "النمسا",
-            "اردن": "الأردن",
-            "Jordan": "الأردن",
-            "پرتغال": "البرتغال",
-            "پرتقال": "البرتغال",
-            "Portugal": "البرتغال",
-            "جمهوری دموکراتیک کنگو": "جمهورية الكونغو الديمقراطية",
-            "کنگو دمکراتیک": "جمهورية الكونغو الديمقراطية",
-            "کنگو دموکراتیک": "جمهورية الكونغو الديمقراطية",
-            "جمهوری کنگو": "جمهورية الكونغو الديمقراطية",
-            "Democratic Republic of the Congo": "جمهورية الكونغو الديمقراطية",
-            "DR Congo": "جمهورية الكونغو الديمقراطية",
-            "Congo DR": "جمهورية الكونغو الديمقراطية",
-            "Congo (DR)": "جمهورية الكونغو الديمقراطية",
-            "Congo": "جمهورية الكونغو الديمقراطية",
-            "الكونغو": "جمهورية الكونغو الديمقراطية",
-            "انگلستان": "إنجلترا",
-            "England": "إنجلترا",
-            "کرواسی": "كرواتيا",
-            "Croatia": "كرواتيا",
-            "ازبکستان": "أوزبكستان",
-            "Uzbekistan": "أوزبكستان",
-            "کلمبیا": "كولومبيا",
-            "Colombia": "كولومبيا",
-            "غنا": "غانا",
-            "Ghana": "غانا",
-            "پاناما": "بنما",
-            "Panama": "بنما",
-            "استرالیا": "أستراليا",
-            "Australia": "أستراليا",
-            "ترکیه": "تركيا",
-            "Turkey": "تركيا"
-        };
-
-        const reverseMapping = {};
-        for (let [key, value] of Object.entries(nameMapping)) {
-            if (!reverseMapping[value]) reverseMapping[value] = [];
-            if (!reverseMapping[value].includes(key)) reverseMapping[value].push(key);
-        }
-
-        function translateToArabic(raw) {
-            if (!raw) return "";
-            let trimmed = raw.trim();
-            if (nameMapping[trimmed]) return nameMapping[trimmed];
-            let lower = trimmed.toLowerCase();
-            for (let [key, value] of Object.entries(nameMapping)) {
-                if (key.toLowerCase() === lower) return value;
-            }
-            if (trimmed.includes("کنگو") || trimmed.includes("الكونغو") || trimmed.toLowerCase().includes("congo")) {
-                return "جمهورية الكونغو الديمقراطية";
-            }
-            return trimmed;
-        }
-
-        function getArabicToPersian(arabicName) {
-            return reverseMapping[arabicName] || [arabicName];
-        }
-
-        function getFlag(name) {
-            const map = {
-                "المكسيك": "🇲🇽",
-                "جنوب أفريقيا": "🇿🇦",
-                "الأرجنتين": "🇦🇷",
-                "الجزائر": "🇩🇿",
-                "النمسا": "🇦🇹",
-                "الأردن": "🇯🇴",
-                "البرتغال": "🇵🇹",
-                "جمهورية الكونغو الديمقراطية": "🇨🇩",
-                "كوريا الجنوبية": "🇰🇷",
-                "التشيك": "🇨🇿",
-                "كندا": "🇨🇦",
-                "البوسنة والهرسك": "🇧🇦",
-                "أمريكا": "🇺🇸",
-                "العراق": "🇮🇶",
-                "سويسرا": "🇨🇭",
-                "قطر": "🇶🇦",
-                "البرازيل": "🇧🇷",
-                "المغرب": "🇲🇦",
-                "هايتي": "🇭🇹",
-                "إسكتلندا": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-                "أستراليا": "🇦🇺",
-                "تركيا": "🇹🇷",
-                "ألمانيا": "🇩🇪",
-                "كوراساو": "🇨🇼",
-                "اليابان": "🇯🇵",
-                "هولندا": "🇳🇱",
-                "الإكوادور": "🇪🇨",
-                "ساحل العاج": "🇨🇮",
-                "السويد": "🇸🇪",
-                "تونس": "🇹🇳",
-                "إسبانيا": "🇪🇸",
-                "الرأس الأخضر": "🇨🇻",
-                "مصر": "🇪🇬",
-                "بلجيكا": "🇧🇪",
-                "السعودية": "🇸🇦",
-                "أوروغواي": "🇺🇾",
-                "إيران": "🇮🇷",
-                "نيوزيلندا": "🇳🇿",
-                "السنغال": "🇸🇳",
-                "فرنسا": "🇫🇷",
-                "النرويج": "🇳🇴",
-                "إنجلترا": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-                "كرواتيا": "🇭🇷",
-                "بنما": "🇵🇦",
-                "كولومبيا": "🇨🇴",
-                "أوزبكستان": "🇺🇿",
-                "غانا": "🇬🇭",
-                "باراغواي": "🇵🇾"
-            };
-            return map[name] || "🏁";
-        }
-
-        function formatDate(isoString) {
-            if (!isoString) return 'تاريخ غير معروف';
-            try {
-                const d = new Date(isoString);
-                const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-                    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
-                ];
-                return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}، ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-            } catch {
-                return isoString;
-            }
-        }
-
-        // ============================================================
-        //  LOAD DATA - النسخة المعدلة بالكامل
-        // ============================================================
-        async function loadPreviousGames() {
-            const cached = getCache("games");
-            if (cached && cached.length > 0) {
-                state.previousGamesData = cached;
-                console.log("✅ تم تحميل المباريات من الكاش:", state.previousGamesData.length);
-                return;
-            }
-            try {
-                console.log("🔄 جاري تحميل المباريات من API...");
-                const res = await fetch("https://worldcup26.ir/get/games");
-                if (!res.ok) throw new Error("Network response was not ok");
-                const data = await res.json();
-                const finished = (data.games || []).filter(g => g.finished === "TRUE");
-                console.log("✅ المباريات المنتهية:", finished.length);
-                
-                state.previousGamesData = finished.map(g => {
-                    const homeRaw = g.home_team_name_en || g.home_team_name_fa || '';
-                    const awayRaw = g.away_team_name_en || g.away_team_name_fa || '';
-                    let homeName = translateToArabic(homeRaw);
-                    let awayName = translateToArabic(awayRaw);
-                    
-                    // ============================================================
-                    //  التعديل الأساسي: قراءة بيانات ضربات الجزاء بشكل صحيح
-                    // ============================================================
-                    // الـ API يستخدم هذه الحقول:
-                    // - home_penalty_score  (عدد ضربات الجزاء التي سجلها الفريق المضيف)
-                    // - away_penalty_score  (عدد ضربات الجزاء التي سجلها الفريق الضيف)
-                    // - home_penalty_scorers (أسماء مسجلي ضربات الجزاء للفريق المضيف)
-                    // - away_penalty_scorers (أسماء مسجلي ضربات الجزاء للفريق الضيف)
-                    // - home_penalty_misses  (أسماء من أضاع ضربات جزاء للفريق المضيف)
-                    // - away_penalty_misses  (أسماء من أضاع ضربات جزاء للفريق الضيف)
-                    
-                    // تحويل قيم ضربات الجزاء إلى أرقام
-                    const homePenalty = g.home_penalty_score ? parseInt(g.home_penalty_score) : null;
-                    const awayPenalty = g.away_penalty_score ? parseInt(g.away_penalty_score) : null;
-                    
-                    // تحديد وجود ضربات جزاء بناءً على وجود القيم
-                    const hadPenalties = (homePenalty !== null && awayPenalty !== null);
-                    
-                    // ============================================================
-                    //  معالجة خاصة لمباراة مصر وأستراليا (مثال)
-                    // ============================================================
-                    // هذه المعالجة تبقى كما هي للمباريات التي قد لا تحتوي على بيانات
-                    // ضربات جزاء في الـ API
-                    if ((homeName === "مصر" && awayName === "أستراليا") ||
-                        (homeName === "أستراليا" && awayName === "مصر")) {
-                        return {
-                            homeAr: "مصر",
-                            awayAr: "أستراليا",
-                            homeScore: parseInt(g.home_score || 0),
-                            awayScore: parseInt(g.away_score || 0),
-                            homePenalty: 5,
-                            awayPenalty: 4,
-                            hadPenalties: true,
-                            sortTimestamp: new Date(g.local_date || '').getTime() || 0
-                        };
-                    }
-                    
-                    // ============================================================
-                    //  إرجاع الكائن مع البيانات الصحيحة
-                    // ============================================================
-                    return {
-                        homeAr: homeName,
-                        awayAr: awayName,
-                        homeScore: parseInt(g.home_score || 0),
-                        awayScore: parseInt(g.away_score || 0),
-                        homePenalty: homePenalty,      // <-- الآن تقرأ من home_penalty_score
-                        awayPenalty: awayPenalty,      // <-- الآن تقرأ من away_penalty_score
-                        hadPenalties: hadPenalties,    // <-- يتم تحديدها تلقائياً
-                        sortTimestamp: new Date(g.local_date || '').getTime() || 0
-                    };
-                });
-                
-                setCache("games", state.previousGamesData);
-                console.log("✅ تم حفظ المباريات:", state.previousGamesData.length);
-                
-                // ============================================================
-                //  طباعة تفاصيل مباراة سويسرا وكولومبيا للتأكد
-                // ============================================================
-                const swissColombia = state.previousGamesData.find(m => 
-                    (m.homeAr === "سويسرا" && m.awayAr === "كولومبيا") ||
-                    (m.homeAr === "كولومبيا" && m.awayAr === "سويسرا")
-                );
-                if (swissColombia) {
-                    console.log("✅ مباراة سويسرا vs كولومبيا:", swissColombia);
-                }
-                
-            } catch (e) {
-                console.warn("⚠️ فشل تحميل المباريات:", e);
-                state.previousGamesData = [];
-            }
-        }
-
-        async function getAllPredictions() {
-            if (!supabaseClient) {
-                console.warn("⚠️ Supabase client not available");
-                state.predictions = [];
-                return;
-            }
-            try {
-                console.log("🔄 جاري تحميل التوقعات من Supabase...");
-                const { data, error } = await supabaseClient
-                    .from("predictions")
-                    .select("*")
-                    .limit(1000);
-                if (error) throw error;
-                state.predictions = data || [];
-                console.log("✅ تم تحميل التوقعات:", state.predictions.length);
-                setCache("predictions", state.predictions);
-            } catch (e) {
-                console.warn("⚠️ فشل تحميل التوقعات:", e);
-                state.predictions = [];
-            }
-        }
-
-        // ============================================================
-        //  SMART MATCH FINDER
-        // ============================================================
-        function findMatchResult(team1, team2) {
-            const team1Ar = translateToArabic(team1);
-            const team2Ar = translateToArabic(team2);
-            let match = state.previousGamesData.find(m =>
-                (m.homeAr === team1Ar && m.awayAr === team2Ar) ||
-                (m.homeAr === team2Ar && m.awayAr === team1Ar)
-            );
-            if (match) {
-                return {
-                    homeScore: match.homeScore,
-                    awayScore: match.awayScore,
-                    homeAr: match.homeAr,
-                    awayAr: match.awayAr,
-                    homePenalty: match.homePenalty || null,
-                    awayPenalty: match.awayPenalty || null,
-                    hadPenalties: match.hadPenalties || false
-                };
-            }
-            const team1Variants = getArabicToPersian(team1Ar);
-            const team2Variants = getArabicToPersian(team2Ar);
-            for (let t1 of team1Variants) {
-                for (let t2 of team2Variants) {
-                    const t1Ar = translateToArabic(t1);
-                    const t2Ar = translateToArabic(t2);
-                    const rawMatch = state.previousGamesData.find(m =>
-                        (m.homeAr === t1Ar && m.awayAr === t2Ar) ||
-                        (m.homeAr === t2Ar && m.awayAr === t1Ar)
-                    );
-                    if (rawMatch) {
-                        return {
-                            homeScore: rawMatch.homeScore,
-                            awayScore: rawMatch.awayScore,
-                            homeAr: rawMatch.homeAr,
-                            awayAr: rawMatch.awayAr,
-                            homePenalty: rawMatch.homePenalty || null,
-                            awayPenalty: rawMatch.awayPenalty || null,
-                            hadPenalties: rawMatch.hadPenalties || false
-                        };
-                    }
-                }
-            }
-            if (team1Ar.includes("الكونغو") || team2Ar.includes("الكونغو") ||
-                team1Ar.includes("جمهورية الكونغو") || team2Ar.includes("جمهورية الكونغو")) {
-                const congoMatch = state.previousGamesData.find(m =>
-                    m.homeAr.includes("الكونغو") || m.awayAr.includes("الكونغو") ||
-                    m.homeAr.includes("جمهورية الكونغو") || m.awayAr.includes("جمهورية الكونغو")
-                );
-                if (congoMatch) {
-                    return {
-                        homeScore: congoMatch.homeScore,
-                        awayScore: congoMatch.awayScore,
-                        homeAr: congoMatch.homeAr,
-                        awayAr: congoMatch.awayAr,
-                        homePenalty: congoMatch.homePenalty || null,
-                        awayPenalty: congoMatch.awayPenalty || null,
-                        hadPenalties: congoMatch.hadPenalties || false
-                    };
-                }
-            }
-            return null;
-        }
-
-        // ============================================================
-        //  DETERMINE WINNER - النسخة المعدلة
-        // ============================================================
-        function determineWinner(result) {
-            if (!result) return null;
-            
-            // ============================================================
-            //  الخطوة 1: التحقق من ضربات الجزاء
-            // ============================================================
-            // إذا كانت المباراة حُسمت بضربات جزاء، نستخدمها لتحديد الفائز
-            if (result.hadPenalties && result.homePenalty !== null && result.awayPenalty !== null) {
-                if (parseInt(result.homePenalty) > parseInt(result.awayPenalty)) {
-                    return result.homeAr;  // الفريق المضيف فاز بضربات الجزاء
-                } else if (parseInt(result.awayPenalty) > parseInt(result.homePenalty)) {
-                    return result.awayAr;  // الفريق الضيف فاز بضربات الجزاء
-                }
-                // في حالة نادرة: تعادل في ضربات الجزاء (يستمرون حتى يحسمونها)
-                return null;
-            }
-            
-            // ============================================================
-            //  الخطوة 2: الحالة العادية (بدون ضربات جزاء)
-            // ============================================================
-            if (result.homeScore > result.awayScore) {
-                return result.homeAr;
-            } else if (result.awayScore > result.homeScore) {
-                return result.awayAr;
-            }
-            
-            // ============================================================
-            //  الخطوة 3: تعادل بدون ضربات جزاء
-            // ============================================================
-            // في حالة التعادل بدون ضربات جزاء، لا يوجد فائز
-            return null;
-        }
-
-        function getPredictionStatus(prediction) {
-            if (!prediction || !prediction.match_id) {
-                return { status: 'pending', text: '⏳ مباراة غير معروفة' };
-            }
-            const parts = prediction.match_id.split('_');
-            if (parts.length < 3) {
-                return { status: 'pending', text: '⏳ بيانات غير مكتملة' };
-            }
-            const result = findMatchResult(parts[1], parts[2]);
-            if (!result) {
-                return { status: 'pending', text: '⏳ لم تلعب بعد' };
-            }
-            const correctResult = determineWinner(result);
-            let predictionTeam = prediction.prediction;
-            if (predictionTeam !== 'DRAW') {
-                predictionTeam = translateToArabic(predictionTeam);
-            }
-            if (!correctResult) {
-                if (predictionTeam === 'DRAW') {
-                    return { status: 'correct', text: '✅ صحيح (تعادل)' };
-                } else {
-                    return { status: 'wrong', text: '❌ خاطئ (تعادل)' };
-                }
-            }
-            if (predictionTeam === correctResult) {
-                return { status: 'correct', text: `✅ صحيح (${correctResult})` };
-            } else {
-                return { status: 'wrong', text: `❌ خاطئ (الفائز: ${correctResult})` };
-            }
-        }
-
-        // ============================================================
-        //  حساب بيانات اللاعبين
-        // ============================================================
-        function calculatePlayersData() {
-            const predictions = state.predictions || [];
-            const scores = {};
-            let totalPredictions = 0;
-
-            for (let p of predictions) {
-                totalPredictions++;
-                if (!scores[p.user_name]) {
-                    scores[p.user_name] = { name: p.user_name, points: 0, correct: 0, wrong: 0, total: 0,
-                    predictions: [] };
-                }
-                scores[p.user_name].total++;
-                scores[p.user_name].predictions.push(p);
-                const parts = (p.match_id || "").split("_");
-                if (parts.length < 3) continue;
-                const result = findMatchResult(parts[1], parts[2]);
-                if (!result) continue;
-                const winner = determineWinner(result);
-                let isCorrect = false;
-                let predictionTeam = p.prediction;
-                if (predictionTeam !== 'DRAW') {
-                    predictionTeam = translateToArabic(predictionTeam);
-                }
-                if (winner === null) {
-                    isCorrect = predictionTeam === 'DRAW';
-                } else {
-                    isCorrect = predictionTeam === winner;
-                }
-                if (isCorrect) {
-                    scores[p.user_name].points++;
-                    scores[p.user_name].correct++;
-                } else {
-                    scores[p.user_name].wrong++;
-                }
-            }
-
-            const board = Object.values(scores).sort((a, b) => b.points - a.points || (b.correct - a.correct));
-
-            let totalPoints = 0,
-                maxPoints = 0,
-                totalAccuracy = 0,
-                maxAccuracy = 0,
-                totalCorrect = 0,
-                totalWrong = 0;
-            board.forEach(p => {
-                totalPoints += p.points;
-                if (p.points > maxPoints) maxPoints = p.points;
-                totalCorrect += p.correct;
-                totalWrong += p.wrong;
-                const acc = p.total > 0 ? (p.correct / p.total) * 100 : 0;
-                totalAccuracy += acc;
-                if (acc > maxAccuracy) maxAccuracy = acc;
-            });
-
-            const avgPoints = board.length > 0 ? Math.round(totalPoints / board.length) : 0;
-            const avgAccuracy = board.length > 0 ? Math.round(totalAccuracy / board.length) : 0;
-
-            state.playersData = {
-                board: board,
-                totalPlayers: board.length,
-                totalPredictions: totalPredictions,
-                avgPoints: avgPoints,
-                maxPoints: maxPoints,
-                avgAccuracy: avgAccuracy,
-                maxAccuracy: Math.round(maxAccuracy),
-                totalCorrect: totalCorrect,
-                totalWrong: totalWrong
-            };
-
-            return state.playersData;
-        }
-
-        // ============================================================
-        //  اللقب الواحد لكل لاعب (مختلف عن غيره)
-        // ============================================================
-        function getPlayerTitle(player, index, totalPlayers) {
-            // ألقاب متنوعة
-            const titles = [
-                { minPoints: 20, label: '👑 محنك' },
-                { minPoints: 15, label: '🧠 استراتيجي' },
-                { minPoints: 10, label: '⚡ مغامر' },
-                { minPoints: 5, label: '🎯 فاهم' },
-                { minPoints: 0, label: '🌱 متعلم' }
-            ];
-
-            // ألقاب خاصة بناءً على الدقة
-            const acc = player.total > 0 ? Math.round((player.correct / player.total) * 100) : 0;
-
-            // ترتيب الأولوية: الدقة العالية أولاً
-            if (acc >= 80 && player.total >= 5) return '🧠 فاهم';
-            if (acc >= 70 && player.total >= 5) return '🎯 استراتيجي';
-            if (player.points >= 15) return '⚡ محنك';
-            if (player.points >= 8) return '🔥 مغامر';
-            if (player.total >= 10) return '📚 متابع';
-
-            // ألقاب مميزة حسب الترتيب
-            if (index === 0) return '👑 البطل';
-            if (index === 1) return '🥈 الوصيف';
-            if (index === 2) return '🥉 الثالث';
-
-            // ألقاب عشوائية مميزة
-            const randomTitles = [
-                '🧠 المحلل', '🎯 الصياد', '⚡ البرق', '🔥 النار',
-                '🌊 الموج', '🏔️ الصخر', '🌟 النجم', '💎 الماس'
-            ];
-
-            // استخدام فهرس اللاعب لتحديد لقب ثابت
-            const titleIndex = index % randomTitles.length;
-            return randomTitles[titleIndex];
-        }
-
-        // ============================================================
-        //  RENDER LEADERBOARD
-        // ============================================================
-        function setLeaderboardPeriod(period) {
-            currentLeaderboardPeriod = period;
-            document.querySelectorAll('.period-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.period === period);
-            });
-            renderLeaderboard(period);
-        }
-
-        function renderLeaderboard(period) {
-            const container = document.getElementById("leaderboardContainer");
-            const predictions = state.predictions || [];
-            const games = state.previousGamesData || [];
-            if (predictions.length === 0 || games.length === 0) {
-                container.innerHTML =
-                    `<div class="empty-state"><span class="icon">📭</span> لا توجد بيانات كافية<br><small style="color:var(--text-muted);font-size:0.6rem;">تأكد من وجود توقعات ومباريات</small></div>`;
-                document.getElementById('lbTotalPlayers').textContent = '0';
-                document.getElementById('lbTotalPredictions').textContent = predictions.length;
-                return;
-            }
-
-            const scores = {};
-            let totalPredictions = 0;
-            for (let p of predictions) {
-                totalPredictions++;
-                if (!scores[p.user_name]) {
-                    scores[p.user_name] = { name: p.user_name, points: 0, correct: 0, wrong: 0, total: 0,
-                    predictions: [] };
-                }
-                scores[p.user_name].total++;
-                scores[p.user_name].predictions.push(p);
-                const parts = (p.match_id || "").split("_");
-                if (parts.length < 3) continue;
-                const result = findMatchResult(parts[1], parts[2]);
-                if (!result) continue;
-                const winner = determineWinner(result);
-                let isCorrect = false;
-                let predictionTeam = p.prediction;
-                if (predictionTeam !== 'DRAW') {
-                    predictionTeam = translateToArabic(predictionTeam);
-                }
-                if (winner === null) {
-                    isCorrect = predictionTeam === 'DRAW';
-                } else {
-                    isCorrect = predictionTeam === winner;
-                }
-                if (isCorrect) {
-                    scores[p.user_name].points++;
-                    scores[p.user_name].correct++;
-                } else {
-                    scores[p.user_name].wrong++;
-                }
-            }
-
-            const board = Object.values(scores).sort((a, b) => b.points - a.points || (b.correct - a.correct));
-            document.getElementById('lbTotalPlayers').textContent = board.length;
-            document.getElementById('lbTotalPredictions').textContent = totalPredictions;
-
-            let rank = 1,
-                i = 0;
-            while (i < board.length) {
-                let j = i,
-                    points = board[i].points;
-                while (j < board.length && board[j].points === points) j++;
-                const groupSize = j - i;
-                for (let k = i; k < j; k++) board[k].rank = rank;
-                i = j;
-                rank += groupSize;
-            }
-
-            const currentUser = localStorage.getItem('lastUserName') || '';
-            const topThree = board.slice(0, 3);
-            const rest = board.slice(3, 10);
-
-            let html = '';
-            if (topThree.length) {
-                const champ = topThree[0];
-                const accuracy = champ.total > 0 ? Math.round((champ.correct / champ.total) * 100) : 0;
-                const isCurrentUser = champ.name === currentUser;
-                const medal = champ.rank === 1 ? '🥇' : champ.rank === 2 ? '🥈' : champ.rank === 3 ? '🥉' : `#${champ.rank}`;
-                const title = getPlayerTitle(champ, 0, board.length);
-
+            // الثالث (يسار)
+            if (top3[2]) {
                 html += `
-                <div class="champion-card" onclick="openPlayerPredictions('${champ.name}')">
-                    <div class="rank-badge">${medal}</div>
-                    <div class="avatar">${champ.name.charAt(0).toUpperCase()}</div>
-                    <div class="info">
-                        <div class="name">${champ.name} ${isCurrentUser ? '👤' : ''} <span class="badge">${title}</span></div>
-                        <div class="stats-row">
-                            <span class="item">🏆 نقاط <strong class="highlight">${champ.points}</strong></span>
-                            <span class="item">✅ <strong style="color:var(--gold-light);">${champ.correct}</strong></span>
-                            <span class="item">📊 <strong>${champ.total}</strong></span>
-                            <span class="item">🎯 <strong>${accuracy}%</strong></span>
-                        </div>
-                        <div class="progress-wrapper">
-                            <div class="progress-label"><span>نسبة النجاح</span><span>${accuracy}%</span></div>
-                            <div class="progress-bar"><div class="fill" style="width:${Math.min(accuracy,100)}%;"></div></div>
-                        </div>
+                    <div class="podium-step podium-3">
+                        <div class="rank-icon">🥉</div>
+                        <div class="p-name">${top3[2].name}</div>
+                        <div class="p-stats">🏆 ${top3[2].points} نقطة</div>
                     </div>
-                </div>
                 `;
             }
 
-            if (rest.length || topThree.length > 1) {
-                const allPlayers = [...topThree.slice(1), ...rest];
-                html += `<div class="players-list">`;
-                allPlayers.forEach((player, idx) => {
-                    const rankNum = player.rank;
-                    const accuracy = player.total > 0 ? Math.round((player.correct / player.total) * 100) : 0;
-                    const isCurrentUser = player.name === currentUser;
-                    let medal = rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : `#${rankNum}`;
-                    let rankClass = rankNum === 1 ? 'gold' : rankNum === 2 ? 'silver' : rankNum === 3 ? 'bronze' : '';
-                    let borderClass = rankNum === 1 ? 'gold-border' : rankNum === 2 ? 'silver-border' : rankNum === 3 ?
-                        'bronze-border' : '';
-                    const isTie = board.filter(p => p.rank === rankNum).length > 1;
-                    const tieBadge = isTie ? ' ⚡' : '';
-                    const title = getPlayerTitle(player, idx + 1, board.length);
-
-                    html += `
-                    <div class="player-card" onclick="openPlayerPredictions('${player.name}')">
-                        <div class="rank ${rankClass}">${medal}${tieBadge}</div>
-                        <div class="avatar-sm ${borderClass}">${player.name.charAt(0).toUpperCase()}</div>
-                        <div class="info-sm">
-                            <div class="name-sm">${player.name} ${isCurrentUser ? '👤' : ''}
-                                ${isTie ? `<span class="mini-badge">⚡ متعادل</span>` : ''}
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-badge">${title}</span>
-                            </div>
-                            <div class="sub-sm">
-                                <span>✅ <span class="highlight">${player.correct}</span></span>
-                                <span>📊 ${player.total}</span>
-                                <span>🎯 ${accuracy}%</span>
-                            </div>
-                            <div class="progress-mini"><div class="fill-mini" style="width:${Math.min(accuracy,100)}%;"></div></div>
-                        </div>
-                        <div class="points-sm">${player.points}</div>
-                        ${isCurrentUser ? `<div class="current-user-indicator active"></div><div class="pulse-dot"></div>` : ''}
+            // الأول (وسط، أعلى)
+            if (top3[0]) {
+                html += `
+                    <div class="podium-step podium-1">
+                        <div class="rank-icon">🥇</div>
+                        <div class="p-name" style="font-size:0.9rem;">${top3[0].name}</div>
+                        <div class="p-stats">🏆 ${top3[0].points} نقطة</div>
+                        <div style="font-size:0.45rem;color:var(--gold-light);background:var(--gold-glow);padding:1px 10px;border-radius:40px;margin-top:2px;">👑 البطل</div>
                     </div>
+                `;
+            }
+
+            // الثاني (يمين)
+            if (top3[1]) {
+                html += `
+                    <div class="podium-step podium-2">
+                        <div class="rank-icon">🥈</div>
+                        <div class="p-name">${top3[1].name}</div>
+                        <div class="p-stats">🏆 ${top3[1].points} نقطة</div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            // باقي المشاركين
+            if (rest.length > 0) {
+                html += `<div style="width:100%;max-width:500px;margin:6px auto 0;text-align:center;font-size:0.6rem;color:var(--text-secondary);border-top:1px solid rgba(255,255,255,0.04);padding-top:6px;"><i class="fas fa-star" style="color:var(--gold-light);"></i> باقي المشاركين</div>`;
+                html += `<div class="other-players-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:4px;max-width:500px;margin:0 auto;">`;
+                rest.forEach(p => {
+                    html += `
+                        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-sm);padding:4px 8px;display:flex;align-items:center;gap:4px;font-size:0.6rem;">
+                            <div style="width:20px;height:20px;border-radius:50%;background:rgba(212,167,69,0.10);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.5rem;color:var(--gold-light);flex-shrink:0;">${p.name.charAt(0).toUpperCase()}</div>
+                            <span style="flex:1;font-weight:600;">${p.name}</span>
+                            <span style="font-weight:800;color:var(--gold-light);font-size:0.6rem;">${p.points}</span>
+                        </div>
                     `;
                 });
                 html += `</div>`;
             }
+
             container.innerHTML = html;
-
-            updateStatsTab();
-            updateChartDropdown();
         }
 
         // ============================================================
-        //  RENDER STATS TAB
+        //  عداد تدريجي (للهيرو)
         // ============================================================
-        function updateStatsTab() {
-            const data = calculatePlayersData();
-            const board = data.board || [];
+        function animateCounterStatic(elementId, targetValue, suffix = '') {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const duration = 1600;
+            const start = performance.now();
 
-            document.getElementById('statsTotalPlayers').textContent = `${data.totalPlayers} لاعب`;
-
-            document.getElementById('statAvgPoints').textContent = data.avgPoints;
-            document.getElementById('statMaxPoints').textContent = data.maxPoints;
-            document.getElementById('statAvgAccuracy').textContent = data.avgAccuracy + '%';
-            document.getElementById('statTopAccuracy').textContent = data.maxAccuracy + '%';
-            document.getElementById('statTotalCorrect').textContent = data.totalCorrect;
-            document.getElementById('statTotalWrong').textContent = data.totalWrong;
-
-            const listContainer = document.getElementById('playerRankList');
-            if (board.length === 0) {
-                listContainer.innerHTML = `<div class="empty-state"><span class="icon">📭</span> لا توجد بيانات</div>`;
-                return;
-            }
-
-            let html = '';
-            board.forEach((p, idx) => {
-                const acc = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
-                const rankNum = idx + 1;
-                let medal = rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : `#${rankNum}`;
-                const title = getPlayerTitle(p, idx, board.length);
-                html += `
-                <div class="player-rank-item" onclick="openPlayerPredictions('${p.name}')" style="cursor:pointer;">
-                    <span class="rank-num">${medal}</span>
-                    <span class="pname">${p.name} <span style="font-size:0.55rem;color:var(--gold-light);">${title}</span></span>
-                    <span class="ppoints">${p.points}</span>
-                    <span class="pacc">🎯 ${acc}%</span>
-                </div>
-                `;
-            });
-            listContainer.innerHTML = html;
-        }
-
-        // ============================================================
-        //  CHART – تقدم النقاط
-        // ============================================================
-        function updateChartDropdown() {
-            const select = document.getElementById('chartPlayerSelect');
-            const data = calculatePlayersData();
-            const board = data.board || [];
-
-            const currentVal = select.value;
-            select.innerHTML = '<option value="">-- اختر لاعب --</option>';
-            board.forEach(p => {
-                const option = document.createElement('option');
-                option.value = p.name;
-                option.textContent = `${p.name} (${p.points} نقاط)`;
-                select.appendChild(option);
-            });
-            if (currentVal && board.find(p => p.name === currentVal)) {
-                select.value = currentVal;
-            }
-            updateChart();
-        }
-
-        function updateChart() {
-            const select = document.getElementById('chartPlayerSelect');
-            const playerName = select.value;
-            const canvas = document.getElementById('progressChart');
-
-            if (!playerName) {
-                if (chartInstance) {
-                    chartInstance.destroy();
-                    chartInstance = null;
-                }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() ||
-                    '#8aa0c0';
-                ctx.font = '12px Cairo';
-                ctx.textAlign = 'center';
-                ctx.fillText('📊 اختر لاعباً', canvas.width / 2, canvas.height / 2);
-                return;
-            }
-
-            const data = calculatePlayersData();
-            const board = data.board || [];
-            const player = board.find(p => p.name === playerName);
-            if (!player || !player.predictions || player.predictions.length === 0) {
-                if (chartInstance) {
-                    chartInstance.destroy();
-                    chartInstance = null;
-                }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() ||
-                    '#8aa0c0';
-                ctx.font = '12px Cairo';
-                ctx.textAlign = 'center';
-                ctx.fillText('📭 لا توجد توقعات كافية', canvas.width / 2, canvas.height / 2);
-                return;
-            }
-
-            let cumulativePoints = 0;
-            const labels = [];
-            const pointsData = [];
-
-            const sortedPredictions = [...player.predictions].sort((a, b) => {
-                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
-            });
-
-            for (let p of sortedPredictions) {
-                const parts = (p.match_id || "").split("_");
-                if (parts.length < 3) continue;
-                const result = findMatchResult(parts[1], parts[2]);
-                if (!result) continue;
-                const winner = determineWinner(result);
-                let isCorrect = false;
-                let predictionTeam = p.prediction;
-                if (predictionTeam !== 'DRAW') {
-                    predictionTeam = translateToArabic(predictionTeam);
-                }
-                if (winner === null) {
-                    isCorrect = predictionTeam === 'DRAW';
+            function update(currentTime) {
+                const elapsed = currentTime - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(0 + (targetValue - 0) * eased);
+                el.textContent = current + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
                 } else {
-                    isCorrect = predictionTeam === winner;
+                    el.textContent = targetValue + suffix;
                 }
-                if (isCorrect) cumulativePoints++;
-                const matchLabel = `${parts[1]?.slice(0,4)||'?'} vs ${parts[2]?.slice(0,4)||'?'}`;
-                labels.push(matchLabel);
-                pointsData.push(cumulativePoints);
             }
+            requestAnimationFrame(update);
+        }
 
-            if (labels.length === 0) {
-                if (chartInstance) {
-                    chartInstance.destroy();
-                    chartInstance = null;
-                }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() ||
-                    '#8aa0c0';
-                ctx.font = '12px Cairo';
-                ctx.textAlign = 'center';
-                ctx.fillText('📭 لا توجد مباريات محسوبة', canvas.width / 2, canvas.height / 2);
-                return;
-            }
+        // ============================================================
+        //  SLIDE AUTO-PLAY – 6 ثوانٍ
+        // ============================================================
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+        let isTransitioning = false;
+        let autoPlayInterval = null;
+        const AUTO_PLAY_DELAY = 6000;
 
-            const isDark = document.documentElement.getAttribute('data-theme') === 'light' ? false : true;
-            const textColor = isDark ? '#8aa0c0' : '#3d5a78';
-            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
-            const goldColor = '#e4b34a';
+        const dotsContainer = document.getElementById('dotsContainer');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dotsContainer.appendChild(dot);
+        }
 
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
-
-            const ctx = canvas.getContext('2d');
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: `${playerName}`,
-                        data: pointsData,
-                        borderColor: goldColor,
-                        backgroundColor: 'rgba(212,167,69,0.08)',
-                        fill: true,
-                        tension: 0.3,
-                        pointBackgroundColor: goldColor,
-                        pointBorderColor: 'transparent',
-                        pointRadius: 3,
-                        pointHoverRadius: 6,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: textColor,
-                                font: { family: 'Cairo', size: 10 }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: textColor,
-                                font: { family: 'Cairo', size: 9 },
-                                stepSize: 1
-                            },
-                            grid: { color: gridColor }
-                        },
-                        x: {
-                            ticks: {
-                                color: textColor,
-                                font: { family: 'Cairo', size: 8 },
-                                maxRotation: 30,
-                                minRotation: 0
-                            },
-                            grid: { display: false }
-                        }
-                    }
-                }
+        function updateDots() {
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
             });
         }
 
-        // ============================================================
-        //  COMPARE PLAYERS
-        // ============================================================
-        function comparePlayers() {
-            const input1 = document.getElementById('compareInput1').value.trim();
-            const input2 = document.getElementById('compareInput2').value.trim();
-
-            if (!input1 || !input2) {
-                showToast('⚠️ أدخل اسمي لاعبين');
-                return;
-            }
-
-            const data = calculatePlayersData();
-            const board = data.board || [];
-
-            const findPlayer = (name) => {
-                return board.find(p => p.name.toLowerCase() === name.toLowerCase());
-            };
-
-            const p1 = findPlayer(input1);
-            const p2 = findPlayer(input2);
-
-            const resultContainer = document.getElementById('compareResult');
-
-            if (!p1 && !p2) {
-                resultContainer.innerHTML = `<div class="empty-state"><span class="icon">❌</span> لم يتم العثور على أي لاعب</div>`;
-                resultContainer.classList.add('show');
-                return;
-            }
-
-            if (!p1) {
-                resultContainer.innerHTML =
-                    `<div class="empty-state"><span class="icon">❌</span> لم يتم العثور على: ${input1}</div>`;
-                resultContainer.classList.add('show');
-                return;
-            }
-
-            if (!p2) {
-                resultContainer.innerHTML =
-                    `<div class="empty-state"><span class="icon">❌</span> لم يتم العثور على: ${input2}</div>`;
-                resultContainer.classList.add('show');
-                return;
-            }
-
-            const acc1 = p1.total > 0 ? Math.round((p1.correct / p1.total) * 100) : 0;
-            const acc2 = p2.total > 0 ? Math.round((p2.correct / p2.total) * 100) : 0;
-
-            const getPlayerType = (p) => {
-                if (p.total === 0) return { type: '🤔 غير معروف', risk: 0 };
-                const risk = Math.round((p.wrong / p.total) * 100);
-                let type = '';
-                if (risk > 60) type = '🔥 صياد مفاجآت';
-                else if (risk > 40) type = '⚡ مغامر';
-                else if (risk > 20) type = '🧠 استراتيجي';
-                else type = '🛡️ محافظ';
-                return { type, risk };
-            };
-
-            const type1 = getPlayerType(p1);
-            const type2 = getPlayerType(p2);
-
-            const getRiskClass = (risk) => {
-                if (risk > 60) return 'high';
-                if (risk > 35) return 'medium';
-                return 'low';
-            };
-
-            const title1 = getPlayerTitle(p1, 0, board.length);
-            const title2 = getPlayerTitle(p2, 1, board.length);
-
-            const compareHTML = `
-                <div class="compare-card">
-                    <div class="player-col">
-                        <div class="avatar-compare">${p1.name.charAt(0).toUpperCase()}</div>
-                        <div class="cname">👤 ${p1.name}</div>
-                        <div class="player-type">${title1}</div>
-                        <div class="cstat" style="margin-top:6px;">
-                            <span class="num">${p1.points}</span> نقاط
-                        </div>
-                        <div class="cstat">
-                            🎯 دقة <span class="num ${acc1 >= acc2 ? 'green' : 'red'}">${acc1}%</span>
-                        </div>
-                        <div style="margin-top:4px;font-size:0.6rem;color:var(--text-secondary);">
-                            المجازفة: ${type1.risk}%
-                        </div>
-                        <div class="risk-bar">
-                            <div class="fill-risk ${getRiskClass(type1.risk)}" style="width:${type1.risk}%;"></div>
-                        </div>
-                    </div>
-                    <div class="vs-divider">⚔️</div>
-                    <div class="player-col">
-                        <div class="avatar-compare">${p2.name.charAt(0).toUpperCase()}</div>
-                        <div class="cname">👤 ${p2.name}</div>
-                        <div class="player-type">${title2}</div>
-                        <div class="cstat" style="margin-top:6px;">
-                            <span class="num">${p2.points}</span> نقاط
-                        </div>
-                        <div class="cstat">
-                            🎯 دقة <span class="num ${acc2 >= acc1 ? 'green' : 'red'}">${acc2}%</span>
-                        </div>
-                        <div style="margin-top:4px;font-size:0.6rem;color:var(--text-secondary);">
-                            المجازفة: ${type2.risk}%
-                        </div>
-                        <div class="risk-bar">
-                            <div class="fill-risk ${getRiskClass(type2.risk)}" style="width:${type2.risk}%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="compare-details">
-                    <div class="detail-item"><span class="dlabel">🏆 النقاط</span><span class="dvalue gold">${p1.points} - ${p2.points}</span></div>
-                    <div class="detail-item"><span class="dlabel">✅ الصحيحة</span><span class="dvalue gold">${p1.correct} - ${p2.correct}</span></div>
-                    <div class="detail-item"><span class="dlabel">❌ الخاطئة</span><span class="dvalue">${p1.wrong} - ${p2.wrong}</span></div>
-                    <div class="detail-item"><span class="dlabel">📊 الإجمالي</span><span class="dvalue">${p1.total} - ${p2.total}</span></div>
-                    <div class="detail-item"><span class="dlabel">🎯 النجاح</span><span class="dvalue gold">${acc1}% - ${acc2}%</span></div>
-                    <div class="detail-item"><span class="dlabel">🔥 المجازفة</span><span class="dvalue">${type1.risk}% - ${type2.risk}%</span></div>
-                </div>
-            `;
-
-            resultContainer.innerHTML = compareHTML;
-            resultContainer.classList.add('show');
+        function goToSlide(index) {
+            if (isTransitioning) return;
+            if (index === currentIndex) return;
+            if (index < 0 || index >= totalSlides) return;
+            isTransitioning = true;
+            const currentSlide = slides[currentIndex];
+            const nextSlide = slides[index];
+            const direction = index > currentIndex ? 'exit-left' : 'exit-right';
+            currentSlide.classList.remove('active');
+            currentSlide.classList.add(direction);
+            setTimeout(() => {
+                currentSlide.classList.remove(direction);
+                nextSlide.classList.add('active');
+                currentIndex = index;
+                updateDots();
+                setTimeout(() => { isTransitioning = false; }, 400);
+            }, 700);
         }
 
-        // ============================================================
-        //  SWITCH TABS
-        // ============================================================
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
-
-            if (tabId === 'stats') {
-                updateStatsTab();
-            }
-            if (tabId === 'chart') {
-                setTimeout(() => updateChart(), 100);
+        function nextSlide() {
+            if (currentIndex < totalSlides - 1) {
+                goToSlide(currentIndex + 1);
+            } else {
+                showEndCredits();
             }
         }
 
+        function startAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+        }
+
         // ============================================================
-        //  OPEN PLAYER PREDICTIONS
+        //  END CREDITS
         // ============================================================
-        async function openPlayerPredictions(userName) {
-            if (!userName) { showToast('⚠️ اسم المستخدم غير معروف'); return; }
-            const modal = document.getElementById('playerPredictionsModal');
-            const listContainer = document.getElementById('playerPredictionsList');
-            document.getElementById('playerModalTitle').textContent = `📋 توقعات ${userName}`;
-            document.getElementById('playerModalSubtitle').textContent = `👤 عرض جميع توقعات اللاعب ${userName}`;
-            listContainer.innerHTML = `<div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div>`;
+        let endCreditsShown = false;
 
-            let predictions = [];
-            if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient
-                        .from("predictions")
-                        .select("*")
-                        .eq("user_name", userName)
-                        .order("created_at", { ascending: false });
-                    if (!error && data) predictions = data;
-                } catch (e) { console.warn("⚠️ فشل جلب توقعات اللاعب:", e); }
+        function showEndCredits() {
+            if (endCreditsShown) return;
+            endCreditsShown = true;
+            clearInterval(autoPlayInterval);
+            document.getElementById('navControls').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('endCredits').classList.add('show');
+            }, 1500);
+        }
+
+        // ============================================================
+        //  PARTICLES & STARS
+        // ============================================================
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 60; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 20 + 15) + 's';
+                p.style.animationDelay = (Math.random() * 20) + 's';
+                p.style.width = (Math.random() * 3 + 2) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
             }
-            if (!predictions.length) {
-                listContainer.innerHTML =
-                    `<div class="empty-state"><span class="icon">📭</span> لا توجد توقعات لهذا اللاعب</div>`;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                return;
+        }
+        createParticles();
+
+        function createStars() {
+            const container = document.getElementById('starfield');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                star.style.animationDelay = (Math.random() * 6) + 's';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = star.style.width;
+                container.appendChild(star);
             }
+        }
+        createStars();
 
-            let correct = 0,
-                wrong = 0,
-                points = 0;
-            const predictionsWithStatus = predictions.map(p => {
-                const status = getPredictionStatus(p);
-                if (status.status === 'correct') { correct++;
-                    points++; } else if (status.status === 'wrong') { wrong++; }
-                return { ...p, status };
-            });
-            const total = predictions.length;
-            const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-            document.getElementById('playerPoints').textContent = points;
-            document.getElementById('playerCorrect').textContent = correct;
-            document.getElementById('playerWrong').textContent = wrong;
-            document.getElementById('playerTotal').textContent = total;
-            document.getElementById('playerAccuracy').textContent = accuracy + '%';
+        // ============================================================
+        //  WEB AUDIO (مشهد صوتي تشويقي)
+        // ============================================================
+        let audioCtx = null;
+        let isMuted = false;
+        let gainNode = null;
 
-            const allScores = {};
-            const allPredictions = state.predictions || [];
-            for (let p of allPredictions) {
-                if (!allScores[p.user_name]) allScores[p.user_name] = { points: 0 };
-                const parts = (p.match_id || "").split("_");
-                if (parts.length < 3) continue;
-                const result = findMatchResult(parts[1], parts[2]);
-                if (!result) continue;
-                const winner = determineWinner(result);
-                let isCorrect = false;
-                let predictionTeam = p.prediction;
-                if (predictionTeam !== 'DRAW') predictionTeam = translateToArabic(predictionTeam);
-                if (winner === null) { isCorrect = predictionTeam === 'DRAW'; } else { isCorrect = predictionTeam ===
-                        winner; }
-                if (isCorrect) allScores[p.user_name].points++;
-            }
-            const sorted = Object.entries(allScores).sort((a, b) => b[1].points - a[1].points);
-            const rank = sorted.findIndex(([name]) => name === userName) + 1;
-            document.getElementById('playerRank').textContent = rank > 0 ? `#${rank}` : '-';
+        function initAudio() {
+            if (audioCtx) return;
+            try {
+                audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.5;
+                gainNode.connect(audioCtx.destination);
+                playIntroSound();
+            } catch (e) { console.warn("Web Audio not supported"); }
+        }
 
-            let html = '';
-            predictionsWithStatus.forEach((p, idx) => {
-                const parts = p.match_id ? p.match_id.split('_') : [];
-                const team1Raw = parts.length > 1 ? parts[1] : '?';
-                const team2Raw = parts.length > 2 ? parts[2] : '?';
-                const team1Ar = translateToArabic(team1Raw);
-                const team2Ar = translateToArabic(team2Raw);
-                let predText = '';
-                let predictionTeam = p.prediction;
-                if (predictionTeam === 'DRAW') {
-                    predText = '🤝 تعادل';
-                } else {
-                    const predTeamAr = translateToArabic(predictionTeam);
-                    if (predTeamAr === team1Ar) {
-                        predText = `🏆 فوز ${getFlag(team1Ar)} ${team1Ar}`;
-                    } else if (predTeamAr === team2Ar) {
-                        predText = `🏆 فوز ${getFlag(team2Ar)} ${team2Ar}`;
-                    } else {
-                        predText = `🔮 ${predictionTeam}`;
-                    }
+        function playIntroSound() {
+            if (!audioCtx || isMuted) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 2);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3);
+                osc.connect(gain);
+                gain.connect(gainNode);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 3);
+
+                const bufferSize = 2 * audioCtx.sampleRate;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(Math.random(), 2);
                 }
-                const status = p.status;
-                let statusClass = 'pending',
-                    statusText = '⏳ قيد الانتظار';
-                if (status.status === 'correct') { statusClass = 'correct';
-                    statusText = '✅ صحيح'; } else if (status.status === 'wrong') { statusClass = 'wrong';
-                    statusText = '❌ خاطئ'; }
-                const timeStr = p.created_at ? formatDate(p.created_at) : 'تاريخ غير معروف';
-                html += `
-                <div class="player-prediction-item">
-                    <div class="num">#${idx + 1}</div>
-                    <div class="match-info">
-                        <div class="teams"><span class="flag">${getFlag(team1Ar)}</span> ${team1Ar} 🆚 <span class="flag">${getFlag(team2Ar)}</span> ${team2Ar}</div>
-                        <div class="pred">🔮 ${predText}</div>
-                        <span class="status ${statusClass}">${statusText}</span>
-                    </div>
-                    <div class="time">🕒 ${timeStr}</div>
-                </div>
-                `;
-            });
-            listContainer.innerHTML = html;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 200;
+                const noiseGain = audioCtx.createGain();
+                noiseGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                noiseGain.gain.exponentialRampToValueAtTime(0.02, audioCtx.currentTime + 4);
+                noise.connect(filter);
+                filter.connect(noiseGain);
+                noiseGain.connect(gainNode);
+                noise.start(audioCtx.currentTime);
+                noise.stop(audioCtx.currentTime + 4);
+
+                setTimeout(() => {
+                    if (isMuted || !audioCtx) return;
+                    const osc2 = audioCtx.createOscillator();
+                    const g2 = audioCtx.createGain();
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    osc2.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.8);
+                    g2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    g2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+                    osc2.connect(g2);
+                    g2.connect(gainNode);
+                    osc2.start(audioCtx.currentTime);
+                    osc2.stop(audioCtx.currentTime + 1);
+                }, 600);
+            } catch (e) {}
         }
 
-        // ============================================================
-        //  CLOSE MODAL
-        // ============================================================
-        function closePlayerModal() {
-            document.getElementById('playerPredictionsModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('playerModalCloseBtn').addEventListener('click', closePlayerModal);
-        document.getElementById('playerPredictionsModal').addEventListener('click', function(e) {
-            if (e.target === this) closePlayerModal();
+        document.getElementById('muteBtn').addEventListener('click', function() {
+            isMuted = !isMuted;
+            this.innerHTML = isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (gainNode) {
+                gainNode.gain.value = isMuted ? 0 : 0.5;
+            }
+            if (!isMuted && !audioCtx) {
+                initAudio();
+            }
         });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closePlayerModal();
-        });
-
-        // ============================================================
-        //  TOAST
-        // ============================================================
-        function showToast(msg) {
-            const t = document.getElementById('copyToast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
-        }
-
-        // ============================================================
-        //  THEME
-        // ============================================================
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const newTheme = current === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme === 'light' ? 'light' : '');
-            localStorage.setItem('theme', newTheme);
-            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '☀️' : '🌙';
-            if (document.getElementById('tab-chart').classList.contains('active')) {
-                setTimeout(() => updateChart(), 150);
-            }
-        }
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-            document.getElementById('themeToggle').textContent = '☀️';
-        }
-
-        // ============================================================
-        //  CLEAR CACHE AND RELOAD
-        // ============================================================
-        function clearCacheAndReload() {
-            clearCache();
-            showToast('🗑️ تم مسح الكاش');
-            setTimeout(() => location.reload(), 400);
-        }
-
-        function startAutoUpdate() {
-            setInterval(() => {
-                renderLeaderboard(currentLeaderboardPeriod);
-                updateStatsTab();
-                if (document.getElementById('tab-chart').classList.contains('active')) {
-                    updateChart();
-                }
-            }, 30000);
-        }
 
         // ============================================================
         //  INIT
         // ============================================================
-        async function init() {
-            console.log("🚀 بدء التحميل");
-            await loadPreviousGames();
-            await getAllPredictions();
-            state.loaded = true;
-            renderLeaderboard('all');
-            updateStatsTab();
-            updateChartDropdown();
-            startAutoUpdate();
-            console.log("✅ تم التحميل");
+        function init() {
+            // عرض لوحة المتصدرين
+            renderLeaderboard();
 
-            document.getElementById('compareInput1').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') comparePlayers();
-            });
-            document.getElementById('compareInput2').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') comparePlayers();
+            // تشغيل العدادات
+            animateCounterStatic('heroPlayers', data.totalTeams);
+            animateCounterStatic('heroPredictions', data.totalPredictions);
+            animateCounterStatic('heroPoints', data.topPoints);
+
+            // تفعيل الصوت عند أول تفاعل
+            document.body.addEventListener('click', function firstTouch() {
+                if (!audioCtx) {
+                    initAudio();
+                }
+                document.body.removeEventListener('click', firstTouch);
+            }, { once: true });
+
+            // إخفاء الافتتاحية
+            setTimeout(() => {
+                document.getElementById('introLayer').classList.add('hide');
+            }, 3500);
+
+            // بدء العرض التلقائي
+            setTimeout(() => {
+                updateDots();
+                startAutoPlay();
+            }, 4000);
+
+            // التحكم اليدوي بالنقاط
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    if (idx !== currentIndex) {
+                        clearInterval(autoPlayInterval);
+                        goToSlide(idx);
+                        setTimeout(startAutoPlay, AUTO_PLAY_DELAY + 500);
+                    }
+                });
             });
 
-            document.querySelector('[data-tab="chart"]').addEventListener('click', function() {
-                setTimeout(() => updateChart(), 200);
+            // إعادة تشغيل العرض عند النقر على شاشة النهاية
+            document.getElementById('endCredits').addEventListener('click', function() {
+                this.classList.remove('show');
+                endCreditsShown = false;
+                currentIndex = 0;
+                slides.forEach((s, i) => {
+                    s.classList.remove('active', 'exit-left', 'exit-right');
+                    if (i === 0) s.classList.add('active');
+                });
+                updateDots();
+                startAutoPlay();
+                document.getElementById('navControls').style.opacity = '0.1';
             });
         }
 
-        window.openPlayerPredictions = openPlayerPredictions;
-        window.setLeaderboardPeriod = setLeaderboardPeriod;
-        window.toggleTheme = toggleTheme;
-        window.showToast = showToast;
-        window.renderLeaderboard = renderLeaderboard;
-        window.clearCacheAndReload = clearCacheAndReload;
-        window.clearCache = clearCache;
-        window.switchTab = switchTab;
-        window.comparePlayers = comparePlayers;
-        window.updateChart = updateChart;
-        window.updateChartDropdown = updateChartDropdown;
-
+        // تشغيل التطبيق
         init();
     </script>
-
 </body>
 </html>
